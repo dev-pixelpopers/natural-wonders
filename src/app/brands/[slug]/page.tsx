@@ -55,20 +55,49 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
         </section>
 
         {/* Story */}
-        <section className="px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
-          <div className="mx-auto grid max-w-[1650px] gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,640px)] lg:gap-24">
-            <SectionHeading layout="left" size="title" eyebrow="The Brand" title={detail.tagline} className="min-w-0" />
-            <div className="flex flex-col gap-6 text-body-lg text-white/90 lg:pt-12">
-              {detail.story.map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-              <ul className="mt-2 flex flex-wrap gap-3">
-                {detail.categories.map((c) => (
-                  <li key={c} className="rounded-[10px] bg-sage-light px-4 py-3 text-[15px] leading-[0.9] tracking-[-0.02em] text-white uppercase">
-                    {c}
-                  </li>
-                ))}
-              </ul>
+        <section className="relative isolate px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
+          <div className="mx-auto max-w-[1650px]">
+            {/* Editorial Header */}
+            <div className="max-w-[1250px]">
+              <p className="flex items-center gap-3 text-[14px] tracking-[0.14em] text-mint uppercase">
+                <span aria-hidden className="h-px w-8 bg-current" />
+                The Story Behind {brand.name}
+              </p>
+              <h2 className="mt-5 font-valturin text-[clamp(2.5rem,4.2vw,4.75rem)] leading-[0.94] tracking-[-0.02em] text-white uppercase">
+                {detail.tagline}
+              </h2>
+            </div>
+
+            {/* Decorative Divider Line */}
+            <div className="my-10 h-px w-full bg-linear-to-r from-mint/50 via-white/20 to-transparent sm:my-14" />
+
+            {/* Story Paragraphs & Category Highlights in balanced columns */}
+            <div className="grid gap-10 lg:grid-cols-2 lg:gap-20">
+              <div className="flex flex-col gap-6 text-[clamp(1.15rem,1.4vw,1.4rem)] leading-[1.7] text-white/95">
+                <p className="first-letter:float-left first-letter:mr-3.5 first-letter:font-valturin first-letter:text-[3.8rem] first-letter:leading-[0.8] first-letter:text-mint">
+                  {detail.story[0]}
+                </p>
+              </div>
+
+              <div className="flex flex-col justify-between gap-8 text-[clamp(1.05rem,1.25vw,1.225rem)] leading-[1.7] text-white/80">
+                <p>{detail.story[1] || detail.intro}</p>
+
+                <div className="rounded-[22px] border border-white/15 bg-white/[0.04] p-6 sm:p-7 backdrop-blur-xs">
+                  <span className="block text-[12px] font-semibold tracking-[0.14em] text-mint uppercase">
+                    Core Product Focus
+                  </span>
+                  <ul className="mt-4 flex flex-wrap gap-2.5">
+                    {detail.categories.map((c) => (
+                      <li
+                        key={c}
+                        className="rounded-[10px] bg-sage-light px-4 py-2.5 text-[14px] leading-none tracking-[-0.01em] text-white uppercase font-medium shadow-sm transition-transform hover:scale-105"
+                      >
+                        {c}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </section>

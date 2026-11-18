@@ -15,8 +15,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 const SCROLL_PER_CARD_VH = 80;
 
 export function Brands() {
-  const deckBrands = brands.slice(0, 3);
-  const last = deckBrands.length - 1;
+  const last = brands.length - 1;
 
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -28,7 +27,7 @@ export function Brands() {
     const st = ScrollTrigger.getById("brands-scroll");
     if (!st) return;
     // Map each card to the dead-center of its hold plateau on the scrubbed timeline
-    const progressMap = [0.06, 0.50, 0.94];
+    const progressMap = [0.05, 0.33, 0.67, 0.95];
     const targetProgress = progressMap[index] ?? 0.5;
     const targetScroll = st.start + (st.end - st.start) * targetProgress;
     window.scrollTo({ top: targetScroll, behavior: "smooth" });
@@ -86,13 +85,14 @@ export function Brands() {
 
         gsap.set(cards, { transformOrigin: "center top" });
 
-        // Initial setup: Card 0 is in place, Cards 1 & 2 are strictly offscreen and hidden
+        // Initial setup: Card 0 is in place, Cards 1, 2, 3 are strictly offscreen and hidden
         gsap.set(cards[0], { y: 0, scale: 1, autoAlpha: 1 });
-        if (cards[1]) gsap.set(cards[1], { y: getOffscreenY, scale: 1, autoAlpha: 0 });
-        if (cards[2]) gsap.set(cards[2], { y: getOffscreenY, scale: 1, autoAlpha: 0 });
+        for (let i = 1; i < cards.length; i++) {
+          if (cards[i]) gsap.set(cards[i], { y: getOffscreenY, scale: 1, autoAlpha: 0 });
+        }
 
         // While the stage holds, each card rises into view and steps back into the visible deck
-        // Total duration: 4.0s with clean plateaus between transitions
+        // Total duration: 6.0s with clean plateaus between transitions
         const tl = gsap.timeline({
           id: "brands-scroll",
           scrollTrigger: {
@@ -104,8 +104,8 @@ export function Brands() {
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               const p = self.progress;
-              // Cleanly balanced active dot ranges corresponding to the plateaus
-              const active = p < 0.28 ? 0 : p < 0.72 ? 1 : 2;
+              // Cleanly balanced active dot ranges corresponding to the 4 plateaus
+              const active = p < 0.20 ? 0 : p < 0.50 ? 1 : p < 0.80 ? 2 : 3;
               updateActiveDot(active);
             },
           },
@@ -124,8 +124,7 @@ export function Brands() {
           );
         }
 
-        // --- Plateau 1: Card 1 is active, Card 2 is STILL completely offscreen & hidden (time 1.5 -> 2.5) ---
-        // (Nothing animates during 1.5 -> 2.5. Card 2 remains at y: offscreen with autoAlpha: 0)
+        // --- Plateau 1: Card 1 is active, Cards 2 & 3 remain offscreen & hidden (time 1.5 -> 2.5) ---
 
         // --- Transition 2: Card 2 rises into view while Cards 0 & 1 step back into deck (time 2.5 -> 3.5) ---
         tl.to(cards[0], { y: -peekY * 2, scale: 0.92, duration: 1, ease: "power2.inOut" }, 2.5);
@@ -141,7 +140,26 @@ export function Brands() {
           );
         }
 
-        // --- Plateau 2: All 3 cards visible in deck with Card 2 active (time 3.5 -> 4.0) ---
+        // --- Plateau 2: Card 2 is active, Card 3 remains offscreen & hidden (time 3.5 -> 4.5) ---
+
+        // --- Transition 3: Card 3 (Suzu) rises into view while Cards 0, 1, 2 step back (time 4.5 -> 5.5) ---
+        tl.to(cards[0], { y: -peekY * 3, scale: 0.88, duration: 1, ease: "power2.inOut" }, 4.5);
+        if (cards[1]) {
+          tl.to(cards[1], { y: -peekY * 2, scale: 0.92, duration: 1, ease: "power2.inOut" }, 4.5);
+        }
+        if (cards[2]) {
+          tl.to(cards[2], { y: -peekY, scale: 0.96, duration: 1, ease: "power2.inOut" }, 4.5);
+        }
+        if (cards[3]) {
+          tl.fromTo(
+            cards[3],
+            { y: getOffscreenY, scale: 1, autoAlpha: 0 },
+            { y: 0, scale: 1, autoAlpha: 1, duration: 1, ease: "power2.inOut" },
+            4.5,
+          );
+        }
+
+        // --- Plateau 3: All 4 cards visible in deck with Card 3 (Suzu) active (time 5.5 -> 6.0) ---
         tl.to({}, { duration: 0.5 });
 
         updateActiveDot(0);
@@ -195,7 +213,7 @@ export function Brands() {
           ref={stackRef}
           className="@container relative mx-auto mt-[clamp(36px,4vw,64px)] grid w-full max-w-[1360px]"
         >
-          {deckBrands.map((brand, i) => {
+          {brands.map((brand, i) => {
             const zIndex = 10 + i * 10;
 
             return (
@@ -219,7 +237,7 @@ export function Brands() {
             aria-label="Brand slides"
             className="pointer-events-auto absolute -right-4 sm:-right-8 lg:-right-12 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-3.5"
           >
-            {deckBrands.map((brand, i) => (
+            {brands.map((brand, i) => (
               <button
                 key={brand.name}
                 type="button"
@@ -242,7 +260,7 @@ export function Brands() {
         </div>
       </div>
 
-      <div aria-hidden className="hidden motion-safe:block" style={{ height: `${deckBrands.length * SCROLL_PER_CARD_VH}vh` }} />
+      <div aria-hidden className="hidden motion-safe:block" style={{ height: `${brands.length * SCROLL_PER_CARD_VH}vh` }} />
     </section>
   );
 }
