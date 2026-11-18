@@ -11,7 +11,7 @@ gsap.registerPlugin(useGSAP);
 function ExploreBrandsBadge({ className = "" }: { className?: string }) {
   return (
     <a
-      href="#brands"
+      href="/brands"
       className={`relative flex size-[210px] shrink-0 flex-col items-center justify-center text-center ${className}`}
     >
       <div className="pointer-events-none absolute inset-0 animate-[spin_25s_linear_infinite]">

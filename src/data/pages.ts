@@ -56,9 +56,9 @@ export const brandDetails: Record<string, BrandDetail> = {
       { title: "Understated design", body: "Dark, refined packaging that looks at home on any shelf." },
     ],
     gallery: [
-      { src: img("testimonial-gentleman.png"), alt: "Gentlemen Supply hair and beard oil" },
-      { src: img("category-mens-grooming.jpg"), alt: "Gentlemen Supply grooming collection" },
       { src: img("brand-gentlemen-supply.jpg"), alt: "Gentlemen Supply products on a wooden surface" },
+      { src: img("category-mens-grooming.jpg"), alt: "Gentlemen Supply grooming collection" },
+      { src: img("testimonial-gentleman.png"), alt: "Gentlemen Supply hair and beard oil" },
     ],
     hero: img("brand-gentlemen-supply.jpg"),
   },
@@ -82,6 +82,57 @@ export const brandDetails: Record<string, BrandDetail> = {
       { src: img("category-skin-care.jpg"), alt: "Skin care products" },
     ],
     hero: img("brand-juice-day.png"),
+  },
+  "suzu": {
+    tagline: "Japanese-inspired elegance. Radiant, sensory body care.",
+    intro:
+      "Luminous body washes, silkening body oils, and fine fragrance mists inspired by Japanese aesthetics, blending delicate fruit botanicals with warm gourmand notes.",
+    story: [
+      "Suzu was created around the idea that daily body care can be an artful, grounding ritual. Drawing inspiration from Japanese bathing culture and minimalist aesthetics, each formulation is designed to engage the senses through delicate fruit essences, petal-soft hydration, and comforting base notes.",
+      "From nourishing body oils that impart an instant golden glow to refreshing exfoliating washes and lingering fragrance mists, Suzu transforms everyday skincare into a luxurious, elevated experience.",
+    ],
+    categories: ["Body & Bath", "Fragrance Mists", "Skin Care"],
+    highlights: [
+      {
+        title: "Luminous dry body oils",
+        body: "Fast-absorbing, non-greasy botanical oils that deliver deep hydration and a silky, sunlit sheen.",
+      },
+      {
+        title: "Fine fragrance layering",
+        body: "Airy fragrance mists designed to layer seamlessly over washes and oils for an all-day sensory trail.",
+      },
+      {
+        title: "Silkening body cleansers",
+        body: "Gentle, hydrating cleansers infused with tropical fruit extracts and skin-softening botanicals.",
+      },
+    ],
+    gallery: [
+      {
+        src: "/assets/images/brands/suzu/body care - guava with passion fruit/Presentation.png",
+        alt: "Suzu Guava & Passion Fruit complete body care lineup",
+      },
+      {
+        src: "/assets/images/brands/suzu/body care - strawberry with vanilla/Lineup.png",
+        alt: "Suzu Strawberry & Vanilla trio: wash, body oil and mist",
+      },
+      {
+        src: "/assets/images/brands/suzu/body care - guava with passion fruit/Lineup.png",
+        alt: "Suzu Guava & Passion Fruit trio: wash, body oil and mist",
+      },
+      {
+        src: "/assets/images/brands/suzu/body care - strawberry with vanilla/Oil.png",
+        alt: "Suzu Strawberry & Vanilla nourishing body oil",
+      },
+      {
+        src: "/assets/images/brands/suzu/body care - guava with passion fruit/Wash.png",
+        alt: "Suzu Guava & Passion Fruit refreshing body wash",
+      },
+      {
+        src: "/assets/images/brands/suzu/body care - strawberry with vanilla/Mist.png",
+        alt: "Suzu Strawberry & Vanilla body fragrance mist",
+      },
+    ],
+    hero: "/assets/images/brands/suzu/body care - strawberry with vanilla/Presentation.png",
   },
 };
 

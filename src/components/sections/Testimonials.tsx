@@ -56,7 +56,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
             <p className="font-semibold leading-[1.3] tracking-[-0.02em] text-forest" style={{ fontSize: `max(13px, ${u(18.5)})` }}>
               &ldquo;{t.quote}&rdquo;
             </p>
-            <p className="font-light leading-[1.35] tracking-[-0.01em] text-forest/80" style={{ marginTop: u(8), fontSize: `max(9px, ${u(13.5)})` }}>
+            <p className="font-light leading-[1.35] tracking-[-0.01em] text-forest/80 text-[15px]" style={{ marginTop: u(8) }}>
               {t.body}
             </p>
           </blockquote>
@@ -65,17 +65,17 @@ function TestimonialCard({ t }: { t: Testimonial }) {
             <div className="flex flex-col text-left">
               {t.author && (
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-forest leading-tight" style={{ fontSize: `max(10px, ${u(13)})` }}>
+                  <span className="font-semibold text-forest leading-tight text-[20px]" >
                     {t.author}
                   </span>
                   {t.badge && (
-                    <span className="rounded-full bg-forest/5 px-1.5 py-0.5 text-forest/70 font-medium" style={{ fontSize: `max(7px, ${u(9.5)})` }}>
+                    <span className="rounded-full bg-forest/5 px-1.5 py-0.5 text-forest/70 font-medium text-[14px]" >
                       {t.badge}
                     </span>
                   )}
                 </div>
               )}
-              <span className="text-forest/60 font-light leading-tight mt-0.5" style={{ fontSize: `max(8px, ${u(10.5)})` }}>
+              <span className="text-forest/60 font-light leading-tight mt-0.5 text-[11px]" >
                 {t.source || "Walmart Verified Buyer"}{t.date ? ` • ${t.date}` : ""}
               </span>
             </div>

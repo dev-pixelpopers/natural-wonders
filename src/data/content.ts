@@ -101,6 +101,24 @@ export const brands: Brand[] = [
     ],
     shadow: "0 4px 250px rgba(0,0,0,0.54)",
   },
+  {
+    name: "Suzu",
+    slug: "suzu",
+    titleLines: ["Suzu"],
+    description:
+      "Refined, sensory body care inspired by Japanese aesthetics. Suzu blends illuminating dry oils, silkening washes and airy fragrance mists with delicate fruit botanicals and warm gourmand notes.",
+    descriptionWidth: 380,
+    layers: [
+      {
+        src: img("brand-suzu.png"),
+        left: 0,
+        top: 0,
+        width: 1023,
+        height: 558,
+      },
+    ],
+    shadow: "0 4px 250px rgba(0,0,0,0.54)",
+  },
 ];
 
 export type Category = {

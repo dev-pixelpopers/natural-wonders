@@ -16,51 +16,51 @@ function CategoryCard({ category, index }: { category: Category; index: number }
   return (
     <article
       data-category-card
-      className="group relative h-[360px] w-[320px] shrink-0 snap-start select-none transition-transform duration-300 hover:-translate-y-1.5 sm:h-[420px] sm:w-[420px]"
+      className="group relative h-[460px] w-[86vw] max-w-[360px] shrink-0 snap-start select-none transition-transform duration-300 hover:-translate-y-1.5 sm:h-[500px] sm:w-[calc((100%-32px)/2)] sm:max-w-none lg:h-[540px] lg:w-[calc((100%-64px)/3)]"
     >
-      {/* Overlapping photo frame matching the iconic original design, scaled for a clean compact footprint */}
-      <div className="absolute top-[35px] left-0 z-10 h-[270px] w-[165px] overflow-hidden rounded-[24px] border-[6px] border-forest shadow-xl sm:top-[45px] sm:h-[330px] sm:w-[200px] sm:rounded-[30px] sm:border-[8px]">
-        <div className="absolute inset-0 overflow-hidden rounded-[18px] sm:rounded-[22px]">
+      {/* Overlapping photo frame matching the iconic original design, generously scaled for 3 cards in a row */}
+      <div className="absolute top-[35px] left-0 z-10 h-[370px] w-[205px] overflow-hidden rounded-[32px] border-[8px] border-forest shadow-2xl sm:top-[40px] sm:h-[410px] sm:w-[230px] sm:rounded-[36px] sm:border-[10px] lg:top-[45px] lg:h-[440px] lg:w-[260px] lg:rounded-[42px] lg:border-[12px]">
+        <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[26px] lg:rounded-[30px]">
           <Image
             src={category.image}
             alt={category.title}
             width={2752}
             height={1536}
-            sizes="(max-width: 640px) 200px, 300px"
+            sizes="(max-width: 640px) 240px, (max-width: 1024px) 300px, 400px"
             className="absolute max-w-none transition-transform duration-500 ease-out group-hover:scale-105"
             style={category.crop}
           />
         </div>
       </div>
 
-      {/* Sand content card with refined offset, padding, and typography */}
-      <div className="ml-[115px] flex h-[360px] w-[205px] flex-col justify-between rounded-[22px] bg-sand pt-5 pr-4 pb-5 pl-[60px] text-forest shadow-[0_4px_30px_rgba(0,0,0,0.18)] sm:ml-[140px] sm:h-[420px] sm:w-[280px] sm:rounded-[26px] sm:pt-7 sm:pr-6 sm:pb-6 sm:pl-[76px]">
-        <div>
+      {/* Sand content card with refined offset, padding, and bold typography */}
+      <div className="ml-[125px] flex h-[460px] w-[calc(100%-125px)] flex-col justify-between rounded-[26px] bg-sand pt-6 pr-5 pb-6 pl-[90px] text-forest shadow-[0_4px_30px_rgba(0,0,0,0.18)] sm:ml-[145px] sm:h-[500px] sm:w-[calc(100%-145px)] sm:rounded-[30px] sm:pt-8 sm:pr-6 sm:pb-8 sm:pl-[98px] lg:ml-[165px] lg:h-[540px] lg:w-[calc(100%-165px)] lg:rounded-[34px] lg:pt-9 lg:pr-7 lg:pb-9 lg:pl-[108px]">
+        <div  className="flex flex-col justify-center h-full">
           <div className="flex items-center justify-between">
-            <span className="font-gotham text-[10px] font-semibold tracking-[0.14em] text-sage uppercase sm:text-[11px]">
+            <span className="font-gotham text-[11px] font-semibold tracking-[0.14em] text-sage uppercase sm:text-[12px]">
               Category {String(index + 1).padStart(2, "0")}
             </span>
             <span
               aria-hidden
-              className="hidden size-6 items-center justify-center rounded-full bg-forest/5 text-[12px] text-forest/40 transition-colors group-hover:bg-forest group-hover:text-cream sm:flex"
+              className="hidden size-7 items-center justify-center rounded-full bg-forest/5 text-[13px] text-forest/40 transition-colors group-hover:bg-forest group-hover:text-cream sm:flex"
             >
               ↗
             </span>
           </div>
 
-          <h3 className="mt-2 font-valturin text-[24px] leading-[0.92] tracking-[-0.02em] uppercase sm:mt-2.5 sm:text-[28px]">
+          <h3 className="mt-2.5 font-valturin text-[28px] leading-[0.92] tracking-[-0.02em] uppercase text-forest sm:mt-3 sm:text-[34px] lg:text-[38px]">
             {category.title}
           </h3>
 
-          <p className="mt-2 text-[12px] leading-[1.35] text-forest/80 line-clamp-4 sm:mt-2.5 sm:text-[13.5px]">
+          <p className="mt-2.5 text-[13px] leading-[1.4] text-forest/85 line-clamp-4 sm:mt-3 sm:text-[14.5px] lg:text-[15.5px]">
             {category.description}
           </p>
         </div>
 
-        <div className="mt-auto border-t border-forest/10 pt-3">
+        <div className="mt-auto border-t border-forest/10 pt-4">
           <Link
             href={`/categories/${category.slug}`}
-            className="inline-flex items-center gap-1.5 text-[12px] font-medium tracking-[0.02em] text-forest underline decoration-forest/30 transition-colors hover:text-sage hover:decoration-sage sm:text-[13px]"
+            className="inline-flex items-center gap-1.5 text-[13px] font-medium tracking-[0.02em] text-forest underline decoration-forest/30 transition-colors hover:text-sage hover:decoration-sage sm:text-[14px]"
           >
             Explore Category
             <span aria-hidden>→</span>
@@ -172,7 +172,7 @@ export function Categories() {
 
     const start = cards[0].offsetLeft;
     const step = cards[1].offsetLeft - start;
-    const perSlide = window.matchMedia("(min-width: 1280px)").matches ? 2 : 1;
+    const perSlide = window.matchMedia("(min-width: 1024px)").matches ? 3 : window.matchMedia("(min-width: 640px)").matches ? 2 : 1;
     const maxScroll = slider.scrollWidth - slider.clientWidth;
     const lastIndex = Math.ceil(maxScroll / step);
 
@@ -218,12 +218,12 @@ export function Categories() {
         </div>
       </div>
 
-      {/* Slider showcasing multiple compact overlapping cards */}
+      {/* Slider showcasing 3 generous cards per row */}
       <div className="relative mt-12 sm:mt-16">
         <div
           ref={sliderRef}
           id="category-slider"
-          className="no-scrollbar flex snap-x snap-mandatory scroll-pl-4 gap-6 overflow-x-auto px-4 py-4 sm:scroll-pl-[94px] sm:gap-8 sm:px-[94px]"
+          className="no-scrollbar flex snap-x snap-mandatory scroll-pl-4 gap-6 overflow-x-auto px-4 py-8 sm:scroll-pl-[94px] sm:gap-8 sm:px-[94px]"
         >
           {categories.map((category, index) => (
             <CategoryCard key={category.title} category={category} index={index} />

@@ -15,7 +15,8 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 const SCROLL_PER_CARD_VH = 80;
 
 export function Brands() {
-  const last = brands.length - 1;
+  const deckBrands = brands.slice(0, 3);
+  const last = deckBrands.length - 1;
 
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -194,7 +195,7 @@ export function Brands() {
           ref={stackRef}
           className="@container relative mx-auto mt-[clamp(36px,4vw,64px)] grid w-full max-w-[1360px]"
         >
-          {brands.map((brand, i) => {
+          {deckBrands.map((brand, i) => {
             const zIndex = 10 + i * 10;
 
             return (
@@ -218,7 +219,7 @@ export function Brands() {
             aria-label="Brand slides"
             className="pointer-events-auto absolute -right-4 sm:-right-8 lg:-right-12 top-1/2 z-40 flex -translate-y-1/2 flex-col items-center gap-3.5"
           >
-            {brands.map((brand, i) => (
+            {deckBrands.map((brand, i) => (
               <button
                 key={brand.name}
                 type="button"
@@ -241,7 +242,7 @@ export function Brands() {
         </div>
       </div>
 
-      <div aria-hidden className="hidden motion-safe:block" style={{ height: `${brands.length * SCROLL_PER_CARD_VH}vh` }} />
+      <div aria-hidden className="hidden motion-safe:block" style={{ height: `${deckBrands.length * SCROLL_PER_CARD_VH}vh` }} />
     </section>
   );
 }

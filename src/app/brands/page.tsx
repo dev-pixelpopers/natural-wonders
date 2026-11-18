@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function BrandsPage() {
   // Show the front card of the homepage stack first
-  const ordered = [...brands].reverse();
+  const ordered = [...brands];
 
   return (
     <>
