@@ -1,12 +1,14 @@
+
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { testimonials, type Testimonial } from "@/data/content";
 import { cq, img } from "@/lib/design";
 
 /** Card internals scale from the 756px Figma card width. */
 const u = (px: number) => cq(px, 756);
+
 const box = (left: number, top: number, width: number, height: number) => ({
   left: u(left),
   top: u(top),
@@ -14,21 +16,46 @@ const box = (left: number, top: number, width: number, height: number) => ({
   height: u(height),
 });
 
-const CORNERS = ["-top-[3px] -left-[3px]", "-top-[3px] -right-[3px]", "-bottom-[3px] -left-[3px]", "-bottom-[3px] -right-[3px]"];
+const CORNERS = [
+  "-top-[3px] -left-[3px]",
+  "-top-[3px] -right-[3px]",
+  "-bottom-[3px] -left-[3px]",
+  "-bottom-[3px] -right-[3px]",
+];
+
+const AUTOPLAY_DELAY = 2000;
 
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <figure className="@container w-full max-w-[756px]" style={{ rotate: `${t.tilt}deg` }}>
+    <figure
+      className="@container w-full max-w-[756px]"
+      style={{ rotate: `${t.tilt}deg` }}
+    >
       <div className="relative isolate aspect-[756/758]">
         {/* Mint corner accents peeking out from behind the card */}
         {CORNERS.map((pos) => (
-          <span key={pos} aria-hidden className={`absolute bg-mint ${pos}`} style={{ width: u(87), height: u(87) }} />
+          <span
+            key={pos}
+            aria-hidden
+            className={`absolute bg-mint ${pos}`}
+            style={{ width: u(87), height: u(87) }}
+          />
         ))}
+
         <div aria-hidden className="absolute inset-0 bg-sage" />
 
-        {/* White bracket frame, its top edge interrupted by a sage block */}
-        <div aria-hidden className="absolute rounded-b-[32px] border-[6px] border-white" style={box(174, 180, 410, 446)} />
-        <div aria-hidden className="absolute bg-sage" style={box(243, 155, 276, 111)} />
+        {/* White bracket frame */}
+        <div
+          aria-hidden
+          className="absolute rounded-b-[32px] border-[6px] border-white"
+          style={box(174, 180, 410, 446)}
+        />
+
+        <div
+          aria-hidden
+          className="absolute bg-sage"
+          style={box(243, 155, 276, 111)}
+        />
 
         <div
           className="absolute top-1/2 left-1/2 -translate-1/2 overflow-hidden"
@@ -39,7 +66,15 @@ function TestimonialCard({ t }: { t: Testimonial }) {
             rotate: `${t.productTilt}deg`,
           }}
         >
-          <Image src={t.image} alt={t.imageAlt} width={1200} height={1200} sizes="700px" className="absolute max-w-none" style={t.crop} />
+          <Image
+            src={t.image}
+            alt={t.imageAlt}
+            width={1200}
+            height={1200}
+            sizes="700px"
+            className="absolute max-w-none"
+            style={t.crop}
+          />
         </div>
 
         <figcaption
@@ -53,41 +88,66 @@ function TestimonialCard({ t }: { t: Testimonial }) {
           }}
         >
           <blockquote>
-            <p className="font-semibold leading-[1.3] tracking-[-0.02em] text-forest" style={{ fontSize: `max(13px, ${u(18.5)})` }}>
+            <p
+              className="font-semibold leading-[1.3] tracking-[-0.02em] text-forest"
+              style={{ fontSize: `max(13px, ${u(18.5)})` }}
+            >
               &ldquo;{t.quote}&rdquo;
             </p>
-            <p className="font-light leading-[1.35] tracking-[-0.01em] text-forest/80 text-[15px]" style={{ marginTop: u(8) }}>
+
+            <p
+              className="font-light leading-[1.35] tracking-[-0.01em] text-forest/80 text-[15px]"
+              style={{ marginTop: u(8) }}
+            >
               {t.body}
             </p>
           </blockquote>
 
-          <div className="mt-auto pt-3 flex items-end justify-between border-t border-forest/10" style={{ marginTop: u(12) }}>
+          <div
+            className="mt-auto flex items-end justify-between border-t border-forest/10 pt-3"
+            style={{ marginTop: u(12) }}
+          >
             <div className="flex flex-col text-left">
               {t.author && (
                 <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-forest leading-tight text-[20px]" >
+                  <span className="font-semibold text-forest leading-tight text-[20px]">
                     {t.author}
                   </span>
+
                   {t.badge && (
-                    <span className="rounded-full bg-forest/5 px-1.5 py-0.5 text-forest/70 font-medium text-[14px]" >
+                    <span className="rounded-full bg-forest/5 px-1.5 py-0.5 text-forest/70 font-medium text-[14px]">
                       {t.badge}
                     </span>
                   )}
                 </div>
               )}
-              <span className="text-forest/60 font-light leading-tight mt-0.5 text-[11px]" >
-                {t.source || "Walmart Verified Buyer"}{t.date ? ` • ${t.date}` : ""}
+
+              <span className="mt-0.5 text-forest/60 font-light leading-tight text-[11px]">
+                {t.source || "Walmart Verified Buyer"}
+                {t.date ? ` • ${t.date}` : ""}
               </span>
             </div>
 
-            <div className="flex items-center shrink-0" style={{ gap: u(2) }}>
-              <span className="font-medium leading-none" style={{ fontSize: `max(9px, ${u(13)})`, marginRight: u(4) }}>
+            <div className="flex shrink-0 items-center" style={{ gap: u(2) }}>
+              <span
+                className="font-medium leading-none"
+                style={{
+                  fontSize: `max(9px, ${u(13)})`,
+                  marginRight: u(4),
+                }}
+              >
                 {t.rating}
               </span>
+
               {Array.from({ length: 5 }).map((_, i) => {
                 const isPartial = i === 4 && parseFloat(t.rating) < 5;
+
                 return (
-                  <span key={i} className="flex items-center justify-center" style={{ width: u(14), height: u(14) }}>
+                  <span
+                    key={i}
+                    className="flex items-center justify-center"
+                    style={{ width: u(14), height: u(14) }}
+                  >
                     <Image
                       src={img(isPartial ? "star-partial.svg" : "star.svg")}
                       alt=""
@@ -98,6 +158,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
                   </span>
                 );
               })}
+
               <span className="sr-only">{t.rating} out of 5 stars</span>
             </div>
           </div>
@@ -109,7 +170,7 @@ function TestimonialCard({ t }: { t: Testimonial }) {
           aria-hidden
           width={135}
           height={100}
-          className="absolute pointer-events-none"
+          className="pointer-events-none absolute"
           style={box(t.quoteAt.x, t.quoteAt.y, 135, 100)}
         />
       </div>
@@ -119,17 +180,56 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 
 export function Testimonials() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
   const pageSize = 2;
   const totalPages = Math.ceil(testimonials.length / pageSize);
 
   const visibleTestimonials = testimonials.slice(
     currentPage * pageSize,
-    currentPage * pageSize + pageSize
+    currentPage * pageSize + pageSize,
   );
 
+  // Autoplay
+  useEffect(() => {
+    if (isPaused || totalPages <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentPage((p) => (p < totalPages - 1 ? p + 1 : 0));
+    }, AUTOPLAY_DELAY);
+
+    return () => clearInterval(interval);
+  }, [isPaused, totalPages, currentPage]);
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  const previousPage = () => {
+    setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
+  };
+
+  const nextPage = () => {
+    setCurrentPage((p) => (p < totalPages - 1 ? p + 1 : 0));
+  };
+
   return (
-    <section className="relative isolate px-4 pt-[251px]" id="testimonials">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-x-clip">
+    <section
+      className="relative isolate px-4 pt-[251px]"
+      id="testimonials"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          setIsPaused(false);
+        }
+      }}
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 overflow-x-clip"
+      >
         <Image
           src={img("testimonials-glow-right.svg")}
           alt=""
@@ -137,6 +237,7 @@ export function Testimonials() {
           height={1774}
           className="absolute top-[-662px] right-[-751px] h-[1774px] w-[1923px] max-w-none"
         />
+
         <Image
           src={img("testimonials-glow-left.svg")}
           alt=""
@@ -151,7 +252,7 @@ export function Testimonials() {
       </h2>
 
       {/* Cards container */}
-      <div className="mt-[102px] flex flex-col items-center gap-16 lg:flex-row lg:items-start lg:justify-center lg:gap-[60px] transition-opacity duration-300">
+      <div className="mt-[102px] flex flex-col items-center gap-16 transition-opacity duration-300 lg:flex-row lg:items-start lg:justify-center lg:gap-[60px]">
         {visibleTestimonials.map((t, i) => (
           <TestimonialCard key={`${currentPage}-${i}`} t={t} />
         ))}
@@ -161,11 +262,13 @@ export function Testimonials() {
       <div className="mx-auto mt-[72px] flex items-center justify-center gap-5">
         <button
           type="button"
-          onClick={() => setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1))}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white/80 hover:border-white/60 hover:text-white transition-all cursor-pointer"
+          onClick={previousPage}
+          className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/25 text-white/80 transition-all hover:border-white/60 hover:text-white"
           aria-label="Previous testimonials"
         >
-          <span className="rotate-180 inline-block font-mono text-sm leading-none">→</span>
+          <span className="inline-block rotate-180 font-mono text-sm leading-none">
+            →
+          </span>
         </button>
 
         <div className="flex items-center gap-2.5">
@@ -173,9 +276,10 @@ export function Testimonials() {
             <button
               key={i}
               type="button"
-              onClick={() => setCurrentPage(i)}
+              onClick={() => goToPage(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`transition-all duration-300 rounded-full cursor-pointer ${
+              aria-current={currentPage === i ? "true" : undefined}
+              className={`cursor-pointer rounded-full transition-all duration-300 ${
                 currentPage === i
                   ? "h-2.5 w-7 bg-mint shadow-[0_0_8px_rgba(194,255,214,0.6)]"
                   : "h-2.5 w-2.5 bg-[#C2FFD6]/40 hover:bg-[#C2FFD6]/70"
@@ -186,11 +290,13 @@ export function Testimonials() {
 
         <button
           type="button"
-          onClick={() => setCurrentPage((p) => (p < totalPages - 1 ? p + 1 : 0))}
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/25 text-white/80 hover:border-white/60 hover:text-white transition-all cursor-pointer"
+          onClick={nextPage}
+          className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/25 text-white/80 transition-all hover:border-white/60 hover:text-white"
           aria-label="Next testimonials"
         >
-          <span className="inline-block font-mono text-sm leading-none">→</span>
+          <span className="inline-block font-mono text-sm leading-none">
+            →
+          </span>
         </button>
       </div>
     </section>

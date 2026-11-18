@@ -160,7 +160,7 @@ export function WhyBrands() {
       <div className="px-4 pt-[125px] pb-[152px] lg:sticky lg:top-0 lg:flex lg:min-h-screen lg:flex-col lg:justify-center lg:overflow-hidden lg:py-[min(6vh,80px)]">
         <h2
           data-why-heading
-          className="mx-auto max-w-[1426px] text-center font-valturin text-display text-white uppercase"
+          className="mx-auto max-w-[1426px] text-center font-valturin text-display text-white uppercase leading-[1]"
         >
           Thoughtful Products, From Formula to Shelf.
         </h2>

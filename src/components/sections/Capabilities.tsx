@@ -17,32 +17,46 @@ const photos = [
 ];
 
 export function Capabilities() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const totalSlides = capabilityDetails.length;
+
+  // Start in the middle set
+  const [virtualIndex, setVirtualIndex] = useState(totalSlides + 1);
   const [isPaused, setIsPaused] = useState(false);
   const [animating, setAnimating] = useState(false);
 
+  const activeIndex = virtualIndex % totalSlides;
+  const current = capabilityDetails[activeIndex] || capabilityDetails[0];
+
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const animationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const changeSlide = (newIndex: number) => {
-    if (newIndex === activeIndex || animating) return;
+  const animationTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const recenterTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const skipCenter = useRef(false);
+
+  // Change slide
+  const changeSlide = (index: number) => {
+    const newIndex = totalSlides + index;
+
+    if (index === activeIndex || animating) return;
 
     if (animationTimeout.current) {
       clearTimeout(animationTimeout.current);
     }
 
+    if (recenterTimeout.current) {
+      clearTimeout(recenterTimeout.current);
+    }
+
     setAnimating(true);
 
     animationTimeout.current = setTimeout(() => {
-      setActiveIndex(newIndex);
+      setVirtualIndex(newIndex);
       setAnimating(false);
     }, 250);
   };
 
   // Autoplay
-
-  // Autoplay with delay
   useEffect(() => {
     if (isPaused) return;
 
@@ -50,7 +64,7 @@ export function Capabilities() {
       setAnimating(true);
 
       animationTimeout.current = setTimeout(() => {
-        setActiveIndex((prev) => (prev + 1) % capabilityDetails.length);
+        setVirtualIndex((prev) => prev + 1);
         setAnimating(false);
       }, 250);
     }, 1500);
@@ -62,13 +76,37 @@ export function Capabilities() {
         clearTimeout(animationTimeout.current);
       }
     };
-  }, [isPaused, activeIndex]);
+  }, [isPaused, virtualIndex]);
 
-
-  // Center the active tab horizontally
+  // Dynamic side padding
   useEffect(() => {
     const container = containerRef.current;
-    const button = buttonRefs.current[activeIndex];
+    if (!container) return;
+
+    const updatePadding = () => {
+      const padding = container.clientWidth / 2;
+
+      container.style.paddingLeft = `${padding}px`;
+      container.style.paddingRight = `${padding}px`;
+    };
+
+    updatePadding();
+
+    const observer = new ResizeObserver(updatePadding);
+    observer.observe(container);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Center active tab
+  useEffect(() => {
+    if (skipCenter.current) {
+      skipCenter.current = false;
+      return;
+    }
+
+    const container = containerRef.current;
+    const button = buttonRefs.current[virtualIndex];
 
     if (!container || !button) return;
 
@@ -93,35 +131,52 @@ export function Capabilities() {
       ),
       behavior: "smooth",
     });
-  }, [activeIndex]);
 
+    // Recenter silently after reaching the third set
+    if (virtualIndex >= totalSlides * 2) {
+      recenterTimeout.current = setTimeout(() => {
+        const middleButton = buttonRefs.current[totalSlides + activeIndex];
+        const currentButton = buttonRefs.current[virtualIndex];
+
+        if (!container || !middleButton || !currentButton) return;
+
+        const offsetDifference =
+          middleButton.offsetLeft - currentButton.offsetLeft;
+
+        // Move to the identical tab in the middle set without animation
+        container.style.scrollBehavior = "auto";
+        container.scrollLeft += offsetDifference;
+
+        skipCenter.current = true;
+        setVirtualIndex(totalSlides + activeIndex);
+
+        requestAnimationFrame(() => {
+          if (container) {
+            container.style.scrollBehavior = "";
+          }
+        });
+      }, 700);
+    }
+
+    return () => {
+      if (recenterTimeout.current) {
+        clearTimeout(recenterTimeout.current);
+      }
+    };
+  }, [virtualIndex, totalSlides, activeIndex]);
+
+  // Cleanup
   useEffect(() => {
     return () => {
       if (animationTimeout.current) {
         clearTimeout(animationTimeout.current);
       }
+
+      if (recenterTimeout.current) {
+        clearTimeout(recenterTimeout.current);
+      }
     };
   }, []);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const updatePadding = () => {
-      const padding = container.clientWidth / 2;
-      container.style.paddingLeft = `${padding}px`;
-      container.style.paddingRight = `${padding}px`;
-    };
-
-    updatePadding();
-
-    const observer = new ResizeObserver(updatePadding);
-    observer.observe(container);
-
-    return () => observer.disconnect();
-  }, []);
-
-  const current = capabilityDetails[activeIndex] || capabilityDetails[0];
 
   return (
     <section className="relative overflow-x-clip pt-[163px]">
@@ -151,10 +206,11 @@ export function Capabilities() {
                 alt={capabilityDetails[i]?.title || ""}
                 fill
                 sizes="(min-width: 1024px) 800px, 100vw"
-                className={`object-cover transition-opacity duration-700 ease-in-out ${i === activeIndex
-                  ? "opacity-100"
-                  : "pointer-events-none opacity-0"
-                  }`}
+                className={`object-cover transition-opacity duration-700 ease-in-out ${
+                  i === activeIndex
+                    ? "opacity-100"
+                    : "pointer-events-none opacity-0"
+                }`}
               />
             ))}
           </div>
@@ -172,10 +228,11 @@ export function Capabilities() {
         {/* Right Content */}
         <div className="w-full max-w-[720px] lg:pt-[55px]">
           <div
-            className={`transition-all duration-300 ease-out ${animating
-              ? "translate-y-1 opacity-0"
-              : "translate-y-0 opacity-100"
-              }`}
+            className={`transition-all duration-300 ease-out ${
+              animating
+                ? "translate-y-1 opacity-0"
+                : "translate-y-0 opacity-100"
+            }`}
           >
             <h3 className="max-w-[409px] font-valturin text-title text-white capitalize lg:ml-[70px]">
               {current.title}
@@ -184,7 +241,7 @@ export function Capabilities() {
             <div className="relative mt-[60px]">
               <div
                 aria-hidden
-                className="absolute top-[18px] left-0 hidden h-[2px] bg-linear-to-r from-forest to-white lg:block w-[31%]"
+                className="absolute top-[18px] left-0 hidden h-[2px] w-[31%] bg-linear-to-r from-forest to-white lg:block"
               />
 
               <p className="ml-auto max-w-[70%] text-right text-body-lg text-white capitalize">
@@ -193,37 +250,43 @@ export function Capabilities() {
             </div>
           </div>
 
-          {/* Capability Tabs */}
+          {/* Infinite Capability Tabs */}
           <div
             ref={containerRef}
             className="mt-16 overflow-x-auto py-2 font-gotham text-[28px] leading-[0.98] tracking-[-0.02em] text-stone capitalize no-scrollbar scroll-smooth lg:mt-[123px] lg:-ml-[128px]"
           >
             <div className="inline-flex w-max items-center">
-              {capabilityDetails.map((item, i) => (
-                <Fragment key={item.title}>
-                  {i > 0 && (
-                    <span className="select-none whitespace-pre text-stone">
-                      {"      ·      "}
-                    </span>
-                  )}
+              {Array.from({ length: totalSlides * 3 }, (_, index) => {
+                const itemIndex = index % totalSlides;
+                const item = capabilityDetails[itemIndex];
 
-                  <button
-                    ref={(el) => {
-                      buttonRefs.current[i] = el;
-                    }}
-                    type="button"
-                    onClick={() => changeSlide(i)}
-                    className={`shrink-0 cursor-pointer outline-none transition-colors duration-300 ${i === activeIndex
-                      ? "font-medium text-mist"
-                      : "text-stone hover:text-white/80"
+                return (
+                  <Fragment key={index}>
+                    {index > 0 && (
+                      <span className="select-none whitespace-pre text-stone">
+                        {"      ·      "}
+                      </span>
+                    )}
+
+                    <button
+                      ref={(el) => {
+                        buttonRefs.current[index] = el;
+                      }}
+                      type="button"
+                      onClick={() => changeSlide(itemIndex)}
+                      className={`shrink-0 cursor-pointer outline-none transition-colors duration-300 ${
+                        itemIndex === activeIndex
+                          ? "font-medium text-mist"
+                          : "text-stone hover:text-white/80"
                       }`}
-                    aria-label={`Select ${item.title}`}
-                    aria-pressed={i === activeIndex}
-                  >
-                    {item.title}
-                  </button>
-                </Fragment>
-              ))}
+                      aria-label={`Select ${item.title}`}
+                      aria-pressed={itemIndex === activeIndex}
+                    >
+                      {item.title}
+                    </button>
+                  </Fragment>
+                );
+              })}
             </div>
           </div>
         </div>
