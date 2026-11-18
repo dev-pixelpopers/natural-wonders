@@ -14,7 +14,9 @@ function ExploreBrandsBadge({ className = "" }: { className?: string }) {
       href="#brands"
       className={`relative flex size-[210px] shrink-0 flex-col items-center justify-center text-center ${className}`}
     >
-      <Image src={img("circle-dashed-lg.png")} alt="" fill sizes="210px" className="object-contain" />
+      <div className="pointer-events-none absolute inset-0 animate-[spin_25s_linear_infinite]">
+        <Image src={img("circle-dashed-lg.png")} alt="" fill sizes="210px" className="object-contain" />
+      </div>
       <Image
         src={img("arrow-diagonal.svg")}
         alt=""

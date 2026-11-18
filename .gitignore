@@ -42,3 +42,4 @@ next-env.d.ts
 
 # Template with empty values is safe to commit
 !.env.example
+new_reviews_raw.txt

@@ -12,7 +12,7 @@ import { img } from "@/lib/design";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const STORES_FROM = 5000;
-const STORES_TO = 5500;
+const STORES_TO = 14500;
 const formatStores = (n: number) => Math.round(n).toLocaleString("en-US");
 
 /**

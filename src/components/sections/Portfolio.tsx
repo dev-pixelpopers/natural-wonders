@@ -1,11 +1,17 @@
 "use client";
 
+import { useState, useRef, type CSSProperties } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
-import { useRef, type CSSProperties } from "react";
-import { portfolioFilters, portfolioTiles, type PortfolioTile } from "@/data/content";
+import {
+  portfolioBrands,
+  portfolioFilters,
+  portfolioTiles,
+  type BrandKey,
+  type PortfolioTile,
+} from "@/data/content";
 import { cq, img } from "@/lib/design";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -14,14 +20,13 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 const TILE_GAP = 37;
 /** Design width / height of the full tile row, in Figma px. */
 const ROW_W =
-  portfolioTiles.reduce((sum, t) => sum + t.window.width, 0) + TILE_GAP * (portfolioTiles.length - 1);
-const ROW_H = Math.max(...portfolioTiles.map((t) => t.window.height));
+  portfolioTiles.reduce((sum, t) => sum + t.width, 0) + TILE_GAP * (portfolioTiles.length - 1);
+const ROW_H = Math.max(...portfolioTiles.map((t) => t.height));
 const MIDDLE = Math.floor(portfolioTiles.length / 2);
 
 /**
  * Rendered row width. Phones get a fixed-width row that scrolls sideways; from `md` the row
- * scales to fit both the viewport width and the height left over by the heading and filters,
- * so the whole section fits inside the 100vh sticky stage.
+ * scales to fit the viewport width, up to the full ROW_W design width.
  */
 const rowWidth = {
   "--row-w-base": "1100px",
@@ -32,34 +37,30 @@ const rowWidth = {
 const rowLen = (px: number) => `calc(var(--row-w) * ${+(px / ROW_W).toFixed(4)})`;
 
 function Tile({ tile, side }: { tile: PortfolioTile; side: "left" | "middle" | "right" }) {
-  const { box, window } = tile;
   return (
     <div
       data-tile={side}
       className="relative shrink-0 overflow-hidden"
-      style={{ width: cq(window.width, ROW_W), height: cq(window.height, ROW_W) }}
+      style={{ width: cq(tile.width, ROW_W), height: cq(tile.height, ROW_W) }}
     >
       <Image
+        key={tile.src}
         src={tile.src}
         alt={tile.alt}
-        width={box.width}
-        height={box.height}
-        sizes={`${box.width}px`}
-        className="absolute max-w-none object-cover"
-        style={{
-          left: cq(-window.x, ROW_W),
-          top: cq(-window.y, ROW_W),
-          width: cq(box.width, ROW_W),
-          height: cq(box.height, ROW_W),
-        }}
+        fill
+        sizes="(max-width: 768px) 300px, 600px"
+        className="object-cover"
       />
     </div>
   );
 }
 
 export function Portfolio() {
+  const [activeBrand, setActiveBrand] = useState<BrandKey>("natural-wunderz");
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+
+  const tiles = portfolioBrands[activeBrand]?.tiles || portfolioTiles;
 
   useGSAP(
     () => {
@@ -68,7 +69,9 @@ export function Portfolio() {
 
       // Phones: start the sideways-scrolling row centred on the featured tile.
       const scroller = q<HTMLElement>("[data-portfolio-scroller]")[0];
-      scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2;
+      if (scroller) {
+        scroller.scrollLeft = (scroller.scrollWidth - scroller.clientWidth) / 2;
+      }
 
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -146,9 +149,9 @@ export function Portfolio() {
               className="mx-auto flex items-end @container"
               style={{ width: "var(--row-w)", gap: rowLen(TILE_GAP) }}
             >
-              {portfolioTiles.map((tile, i) => (
+              {tiles.map((tile, i) => (
                 <Tile
-                  key={tile.src}
+                  key={i}
                   tile={tile}
                   side={i < MIDDLE ? "left" : i > MIDDLE ? "right" : "middle"}
                 />
@@ -174,19 +177,23 @@ export function Portfolio() {
         </div>
 
         <ul data-portfolio-filters className="flex flex-wrap justify-center gap-[14px] px-4">
-          {portfolioFilters.map((filter) => (
-            <li key={filter.label}>
-              <button
-                type="button"
-                aria-pressed={filter.active}
-                className={`rounded-[10px] p-[clamp(12px,1.04vw,20px)] text-[clamp(14px,1.04vw,20px)] leading-[0.9] tracking-[-0.02em] text-white uppercase ${
-                  filter.active ? "bg-forest" : "bg-sage-light"
-                }`}
-              >
-                {filter.label}
-              </button>
-            </li>
-          ))}
+          {portfolioFilters.map((filter) => {
+            const isActive = activeBrand === filter.id;
+            return (
+              <li key={filter.id}>
+                <button
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => setActiveBrand(filter.id)}
+                  className={`rounded-[10px] p-[clamp(12px,1.04vw,20px)] text-[clamp(14px,1.04vw,20px)] leading-[0.9] tracking-[-0.02em] text-white uppercase transition-colors duration-200 cursor-pointer ${
+                    isActive ? "bg-forest" : "bg-sage-light hover:bg-forest/60"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </section>

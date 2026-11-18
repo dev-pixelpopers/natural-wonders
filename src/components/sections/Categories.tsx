@@ -12,39 +12,60 @@ import { img } from "@/lib/design";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
 
-/** Cards moved per Next/Prev press on wide screens; narrower screens move one at a time. */
-const CARDS_PER_SLIDE = 2;
-
-function CategoryCard({ category }: { category: Category }) {
+function CategoryCard({ category, index }: { category: Category; index: number }) {
   return (
-    <article data-category-card className="relative w-[739px] shrink-0 snap-start">
-      {/* Photo frame overlapping the left edge of the cream card */}
-      <div className="absolute top-[65px] left-0 z-10 h-[586px] w-[377px] overflow-hidden rounded-[49px] border-[15px] border-forest">
-        <div className="absolute overflow-hidden rounded-[34px] inset-0">
+    <article
+      data-category-card
+      className="group relative h-[360px] w-[320px] shrink-0 snap-start select-none transition-transform duration-300 hover:-translate-y-1.5 sm:h-[420px] sm:w-[420px]"
+    >
+      {/* Overlapping photo frame matching the iconic original design, scaled for a clean compact footprint */}
+      <div className="absolute top-[35px] left-0 z-10 h-[270px] w-[165px] overflow-hidden rounded-[24px] border-[6px] border-forest shadow-xl sm:top-[45px] sm:h-[330px] sm:w-[200px] sm:rounded-[30px] sm:border-[8px]">
+        <div className="absolute inset-0 overflow-hidden rounded-[18px] sm:rounded-[22px]">
           <Image
             src={category.image}
-            alt=""
+            alt={category.title}
             width={2752}
             height={1536}
-            sizes="1050px"
-            className="absolute max-w-none"
+            sizes="(max-width: 640px) 200px, 300px"
+            className="absolute max-w-none transition-transform duration-500 ease-out group-hover:scale-105"
             style={category.crop}
           />
         </div>
       </div>
 
-      <div className="ml-[278px] flex h-[717px] w-[461px] flex-col justify-end rounded-[33px] bg-sand pb-[26px] pl-[157px] text-forest shadow-[0_4px_250px_0_black]">
-        <div className="mb-[224px]">
-          <h3 className="font-valturin text-[44px] leading-[0.9] tracking-[-0.02em] uppercase">
+      {/* Sand content card with refined offset, padding, and typography */}
+      <div className="ml-[115px] flex h-[360px] w-[205px] flex-col justify-between rounded-[22px] bg-sand pt-5 pr-4 pb-5 pl-[60px] text-forest shadow-[0_4px_30px_rgba(0,0,0,0.18)] sm:ml-[140px] sm:h-[420px] sm:w-[280px] sm:rounded-[26px] sm:pt-7 sm:pr-6 sm:pb-6 sm:pl-[76px]">
+        <div>
+          <div className="flex items-center justify-between">
+            <span className="font-gotham text-[10px] font-semibold tracking-[0.14em] text-sage uppercase sm:text-[11px]">
+              Category {String(index + 1).padStart(2, "0")}
+            </span>
+            <span
+              aria-hidden
+              className="hidden size-6 items-center justify-center rounded-full bg-forest/5 text-[12px] text-forest/40 transition-colors group-hover:bg-forest group-hover:text-cream sm:flex"
+            >
+              ↗
+            </span>
+          </div>
+
+          <h3 className="mt-2 font-valturin text-[24px] leading-[0.92] tracking-[-0.02em] uppercase sm:mt-2.5 sm:text-[28px]">
             {category.title}
           </h3>
-          <p className="mt-1 text-[20px] leading-[1.35]" style={{ maxWidth: category.descriptionWidth }}>
+
+          <p className="mt-2 text-[12px] leading-[1.35] text-forest/80 line-clamp-4 sm:mt-2.5 sm:text-[13.5px]">
             {category.description}
           </p>
         </div>
-        <Link href={`/products#${category.slug}`} className="mr-[46px] self-end text-[16px] leading-[1.21] underline hover:text-sage">
-          Learn More
-        </Link>
+
+        <div className="mt-auto border-t border-forest/10 pt-3">
+          <Link
+            href={`/categories/${category.slug}`}
+            className="inline-flex items-center gap-1.5 text-[12px] font-medium tracking-[0.02em] text-forest underline decoration-forest/30 transition-colors hover:text-sage hover:decoration-sage sm:text-[13px]"
+          >
+            Explore Category
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
       </div>
     </article>
   );
@@ -75,9 +96,9 @@ function CircleControl({
       aria-label={`${label} categories`}
       aria-controls="category-slider"
       onClick={onClick}
-      className="relative flex size-[112px] items-center justify-center gap-[4px] text-[21px] leading-[1.21] text-cream"
+      className="relative flex size-[96px] cursor-pointer items-center justify-center gap-[4px] text-[18px] leading-[1.21] text-cream transition-transform duration-300 hover:scale-105 active:scale-95"
     >
-      <Image src={img("circle-dashed-sm.png")} alt="" fill sizes="112px" />
+      <Image src={img("circle-dashed-sm.png")} alt="" fill sizes="96px" />
       {direction === "prev" && arrow}
       <span className="relative">{label}</span>
       {direction === "next" && arrow}
@@ -96,40 +117,53 @@ export function Categories() {
     () => {
       const mm = gsap.matchMedia();
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        // Heading from the left, description from the right, once the header reaches mid-screen
+        // Heading from left, description from right when section comes into view
         gsap
           .timeline({
             scrollTrigger: {
-              trigger: headingRef.current,
-              start: "top 50%",
-              toggleActions: "play none none reverse",
+              trigger: sectionRef.current,
+              start: "top 75%",
+              once: true,
             },
           })
-          .from(headingRef.current, { x: -50, autoAlpha: 0, duration: 1, ease: "power3.out" })
-          .from(descriptionRef.current, { x: 50, autoAlpha: 0, duration: 1, ease: "power3.out" }, "<0.15");
+          .fromTo(
+            headingRef.current,
+            { x: -50, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.9, ease: "power3.out" },
+          )
+          .fromTo(
+            descriptionRef.current,
+            { x: 50, opacity: 0 },
+            { x: 0, opacity: 1, duration: 0.9, ease: "power3.out" },
+            "<0.15",
+          );
 
-        // Cards slide up one after another as the slider comes into view
-        gsap.from("[data-category-card]", {
-          y: 120,
-          autoAlpha: 0,
-          duration: 1,
-          ease: "power3.out",
-          stagger: 0.15,
-          scrollTrigger: {
-            trigger: sliderRef.current,
-            start: "top 50%",
-            toggleActions: "play none none reverse",
+        // Category cards rise & fade in with a graceful stagger
+        const cards = gsap.utils.toArray<HTMLElement>("[data-category-card]", sliderRef.current);
+        gsap.fromTo(
+          cards,
+          { y: 60, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sliderRef.current,
+              start: "top 80%",
+              once: true,
+            },
           },
-        });
+        );
       });
 
-      // Stop a slide that is still running if the section unmounts
       return () => slideTween.current?.kill();
     },
     { scope: sectionRef },
   );
 
-  /** Slides the row by a page of cards; wraps around at either end. Runs only on click. */
+  /** Slides the row by cards; wraps around at either end. */
   function slide(direction: 1 | -1) {
     const slider = sliderRef.current;
     if (!slider) return;
@@ -138,11 +172,10 @@ export function Categories() {
 
     const start = cards[0].offsetLeft;
     const step = cards[1].offsetLeft - start;
-    const perSlide = window.matchMedia("(min-width: 1280px)").matches ? CARDS_PER_SLIDE : 1;
+    const perSlide = window.matchMedia("(min-width: 1280px)").matches ? 2 : 1;
     const maxScroll = slider.scrollWidth - slider.clientWidth;
     const lastIndex = Math.ceil(maxScroll / step);
 
-    // Work from where the slider actually is, so manual swipes are respected
     const current = Math.round(slider.scrollLeft / step);
     let next = current + direction * perSlide;
     if (direction === 1 && current >= lastIndex) next = 0;
@@ -151,11 +184,10 @@ export function Categories() {
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     slideTween.current?.kill();
-    // Snap points would fight the tween, so switch them off until it lands
     slider.style.scrollSnapType = "none";
     slideTween.current = gsap.to(slider, {
       scrollTo: { x: Math.min(next * step, maxScroll), autoKill: true },
-      duration: reduce ? 0 : 1.1,
+      duration: reduce ? 0 : 0.8,
       ease: "power3.inOut",
       onComplete: () => {
         slider.style.scrollSnapType = "";
@@ -164,38 +196,43 @@ export function Categories() {
   }
 
   return (
-    <section ref={sectionRef} className="relative">
+    <section id="categories" ref={sectionRef} className="relative z-10 py-[clamp(60px,7vw,120px)]">
+      {/* Section Header */}
       <div className="flex flex-col gap-6 px-4 sm:px-[94px] lg:flex-row lg:items-start lg:justify-between lg:pr-[100px]">
         <h2 ref={headingRef} className="max-w-[1117px] font-valturin text-display text-white uppercase">
           Everyday Categories. Fresh Perspectives.
         </h2>
-        <p ref={descriptionRef} className="max-w-[492px] text-body text-white lg:text-right">
-          We develop across core beauty and personal-care categories, creating products that connect
-          a clear consumer need with a distinctive brand experience.
-        </p>
+        <div ref={descriptionRef} className="flex max-w-[492px] flex-col gap-4 lg:text-right">
+          <p className="text-body text-white">
+            We develop across core beauty and personal-care categories, creating products that connect
+            a clear consumer need with a distinctive brand experience.
+          </p>
+          <div>
+            <Link
+              href="/categories"
+              className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-mint hover:underline"
+            >
+              View All Categories Catalog →
+            </Link>
+          </div>
+        </div>
       </div>
 
-      <div className="relative mt-[74px]">
-        {/* Vertical pagination dots */}
-        <div aria-hidden className="absolute top-[356px] left-[24px] z-20 hidden flex-col gap-[10px] sm:flex">
-          {["dot-solid.svg", "dot-faded.svg", "dot-solid.svg"].map((dot, i) => (
-            <Image key={i} src={img(dot)} alt="" width={10} height={10} className="size-[10px]" />
-          ))}
-        </div>
-
-        {/* Vertical padding keeps the cards' 250px shadows from being clipped by the scroller */}
+      {/* Slider showcasing multiple compact overlapping cards */}
+      <div className="relative mt-12 sm:mt-16">
         <div
           ref={sliderRef}
           id="category-slider"
-          className="no-scrollbar relative -my-[250px] flex snap-x snap-mandatory scroll-pl-4 gap-[151px] overflow-x-auto px-4 py-[250px] sm:scroll-pl-[137px] sm:pl-[137px]"
+          className="no-scrollbar flex snap-x snap-mandatory scroll-pl-4 gap-6 overflow-x-auto px-4 py-4 sm:scroll-pl-[94px] sm:gap-8 sm:px-[94px]"
         >
-          {categories.map((category) => (
-            <CategoryCard key={category.title} category={category} />
+          {categories.map((category, index) => (
+            <CategoryCard key={category.title} category={category} index={index} />
           ))}
         </div>
       </div>
 
-      <div className="relative mt-[109px] flex justify-center gap-[22px]">
+      {/* Prev / Next Circular Navigation Controls */}
+      <div className="relative mt-10 flex justify-center gap-6 sm:mt-14">
         <CircleControl label="Prev" direction="prev" onClick={() => slide(-1)} />
         <CircleControl label="Next" direction="next" onClick={() => slide(1)} />
       </div>
