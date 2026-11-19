@@ -163,7 +163,7 @@ export function Reach() {
         <p
           data-reach-caption
           aria-hidden
-          className="absolute top-[0.3085em] left-[85%] -translate-x-1/2 leading-none"
+          className="absolute top-[0.3085em] left-[87%] -translate-x-1/2 leading-none"
         >
           <span className="block text-[0.0644em] leading-[1.48] tracking-[-0.02em] whitespace-nowrap">
             US Stores
