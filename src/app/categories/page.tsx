@@ -10,7 +10,7 @@ import { categories } from "@/data/content";
 export const metadata: Metadata = {
   title: "Product Categories | Natural Wunderz",
   description:
-    "Body & bath, hair care, men's grooming, lotions & butters, fragrance mists, and skin care: everyday personal care categories developed with fresh perspectives by Natural Wunderz.",
+    "Hair care, body care, skin care, men's care, pet care and baby care: everyday personal care categories developed with fresh perspectives by Natural Wunderz.",
 };
 
 export default function CategoriesPage() {

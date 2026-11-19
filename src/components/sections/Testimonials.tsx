@@ -4,17 +4,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { testimonials, type Testimonial } from "@/data/content";
-import { cq, img } from "@/lib/design";
-
-/** Card internals scale from the 756px Figma card width. */
-const u = (px: number) => cq(px, 756);
-
-const box = (left: number, top: number, width: number, height: number) => ({
-  left: u(left),
-  top: u(top),
-  width: u(width),
-  height: u(height),
-});
+import { img } from "@/lib/design";
 
 const CORNERS = [
   "-top-[3px] -left-[3px]",
@@ -23,156 +13,78 @@ const CORNERS = [
   "-bottom-[3px] -right-[3px]",
 ];
 
-const AUTOPLAY_DELAY = 2000;
+const AUTOPLAY_DELAY = 6000;
 
+/** Text-only review card: the review itself is the focus, no product imagery. */
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <figure
-      className="@container w-full max-w-[756px]"
-      style={{ rotate: `${t.tilt}deg` }}
-    >
-      <div className="relative isolate aspect-[756/758]">
+    <figure className="w-full max-w-[640px]" style={{ rotate: `${t.tilt}deg` }}>
+      <div className="relative isolate h-full">
         {/* Mint corner accents peeking out from behind the card */}
         {CORNERS.map((pos) => (
           <span
             key={pos}
             aria-hidden
-            className={`absolute bg-mint ${pos}`}
-            style={{ width: u(87), height: u(87) }}
+            className={`absolute -z-10 size-[clamp(40px,5vw,72px)] bg-mint ${pos}`}
           />
         ))}
 
-        <div aria-hidden className="absolute inset-0 bg-sage" />
-
-        {/* White bracket frame */}
-        <div
-          aria-hidden
-          className="absolute rounded-b-[32px] border-[6px] border-white"
-          style={box(174, 180, 410, 446)}
-        />
-
-        <div
-          aria-hidden
-          className="absolute bg-sage"
-          style={box(243, 155, 276, 111)}
-        />
-
-        <div
-          className="absolute top-1/2 left-1/2 -translate-1/2 overflow-hidden"
-          style={{
-            width: u(t.frame.width),
-            height: u(t.frame.height),
-            borderRadius: u(t.frame.radius),
-            rotate: `${t.productTilt}deg`,
-          }}
-        >
-          <Image
-            src={t.image}
-            alt={t.imageAlt}
-            width={1200}
-            height={1200}
-            sizes="700px"
-            className="absolute max-w-none"
-            style={t.crop}
-          />
-        </div>
-
-        <figcaption
-          className="absolute flex flex-col rounded-[27px] bg-white text-forest shadow-xl"
-          style={{
-            left: u(178),
-            top: u(422),
-            width: u(410),
-            minHeight: u(204),
-            padding: `${u(22)} ${u(24)} ${u(20)} ${u(28)}`,
-          }}
-        >
-          <blockquote>
-            <p
-              className="font-semibold leading-[1.3] tracking-[-0.02em] text-forest"
-              style={{ fontSize: `max(13px, ${u(18.5)})` }}
+        <div className="h-full bg-sage p-[clamp(16px,2.6vw,40px)]">
+          <figcaption className="flex h-full flex-col rounded-[27px] bg-white p-[clamp(24px,2.6vw,40px)] text-forest shadow-xl">
+            <span
+              aria-hidden
+              className="block h-[0.5em] font-valturin text-[clamp(72px,6vw,104px)] leading-[0.9] text-sage select-none"
             >
-              &ldquo;{t.quote}&rdquo;
-            </p>
+              &ldquo;
+            </span>
 
-            <p
-              className="font-light leading-[1.35] tracking-[-0.01em] text-forest/80 text-[15px]"
-              style={{ marginTop: u(8) }}
-            >
-              {t.body}
-            </p>
-          </blockquote>
+            <blockquote className="mt-4">
+              <p className="text-[clamp(20px,1.6vw,28px)] font-semibold leading-[1.25] tracking-[-0.02em]">
+                &ldquo;{t.quote}&rdquo;
+              </p>
+              <p className="mt-3 text-[clamp(16px,1.05vw,19px)] font-light leading-[1.5] text-forest/80">
+                {t.body}
+              </p>
+            </blockquote>
 
-          <div
-            className="mt-auto flex items-end justify-between border-t border-forest/10 pt-3"
-            style={{ marginTop: u(12) }}
-          >
-            <div className="flex flex-col text-left">
-              {t.author && (
-                <div className="flex items-center gap-1.5">
-                  <span className="font-semibold text-forest leading-tight text-[20px]">
-                    {t.author}
-                  </span>
+            <div className="mt-auto flex items-end justify-between gap-4 border-t border-forest/10 pt-4">
+              <div className="flex flex-col text-left">
+                {t.author && (
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[20px] font-semibold leading-tight">{t.author}</span>
+                    {t.badge && (
+                      <span className="rounded-full bg-forest/5 px-1.5 py-0.5 text-[14px] font-medium text-forest/70">
+                        {t.badge}
+                      </span>
+                    )}
+                  </div>
+                )}
+                <span className="mt-1 text-[13px] font-light leading-tight text-forest/60">
+                  {t.source || "Walmart Verified Buyer"}
+                  {t.date ? ` • ${t.date}` : ""}
+                </span>
+              </div>
 
-                  {t.badge && (
-                    <span className="rounded-full bg-forest/5 px-1.5 py-0.5 text-forest/70 font-medium text-[14px]">
-                      {t.badge}
-                    </span>
-                  )}
-                </div>
-              )}
-
-              <span className="mt-0.5 text-forest/60 font-light leading-tight text-[11px]">
-                {t.source || "Walmart Verified Buyer"}
-                {t.date ? ` • ${t.date}` : ""}
-              </span>
-            </div>
-
-            <div className="flex shrink-0 items-center" style={{ gap: u(2) }}>
-              <span
-                className="font-medium leading-none"
-                style={{
-                  fontSize: `max(9px, ${u(13)})`,
-                  marginRight: u(4),
-                }}
-              >
-                {t.rating}
-              </span>
-
-              {Array.from({ length: 5 }).map((_, i) => {
-                const isPartial = i === 4 && parseFloat(t.rating) < 5;
-
-                return (
-                  <span
-                    key={i}
-                    className="flex items-center justify-center"
-                    style={{ width: u(14), height: u(14) }}
-                  >
+              <div className="flex shrink-0 items-center gap-0.5">
+                <span className="mr-1.5 text-[15px] font-medium leading-none">{t.rating}</span>
+                {Array.from({ length: 5 }).map((_, i) => {
+                  const isPartial = i === 4 && parseFloat(t.rating) < 5;
+                  return (
                     <Image
+                      key={i}
                       src={img(isPartial ? "star-partial.svg" : "star.svg")}
                       alt=""
-                      width={10}
-                      height={10}
-                      style={{ width: u(10.1), height: u(9.7) }}
+                      width={16}
+                      height={15}
+                      className="size-4"
                     />
-                  </span>
-                );
-              })}
-
-              <span className="sr-only">{t.rating} out of 5 stars</span>
+                  );
+                })}
+                <span className="sr-only">{t.rating} out of 5 stars</span>
+              </div>
             </div>
-          </div>
-        </figcaption>
-
-        <Image
-          src={img("quote.svg")}
-          alt=""
-          aria-hidden
-          width={135}
-          height={100}
-          className="pointer-events-none absolute"
-          style={box(t.quoteAt.x, t.quoteAt.y, 135, 100)}
-        />
+          </figcaption>
+        </div>
       </div>
     </figure>
   );
@@ -252,7 +164,7 @@ export function Testimonials() {
       </h2>
 
       {/* Cards container */}
-      <div className="mt-[102px] flex flex-col items-center gap-16 transition-opacity duration-300 lg:flex-row lg:items-start lg:justify-center lg:gap-[60px]">
+      <div className="mt-[102px] flex flex-col items-center gap-16 transition-opacity duration-300 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[60px]">
         {visibleTestimonials.map((t, i) => (
           <TestimonialCard key={`${currentPage}-${i}`} t={t} />
         ))}

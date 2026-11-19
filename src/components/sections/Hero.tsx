@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { usePreloaderComplete } from "@/components/preloader/PreloaderGate";
 import { img } from "@/lib/design";
 import { useRef } from "react";
 import gsap from "gsap";
@@ -8,39 +9,48 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP);
 
-function ExploreBrandsBadge({ className = "" }: { className?: string }) {
-  return (
-    <a
-      href="/brands"
-      className={`relative flex size-[210px] shrink-0 flex-col items-center justify-center text-center ${className}`}
-    >
-      <div className="pointer-events-none absolute inset-0 animate-[spin_25s_linear_infinite]">
-        <Image src={img("circle-dashed-lg.png")} alt="" fill sizes="210px" className="object-contain" />
-      </div>
-      <Image
-        src={img("arrow-diagonal.svg")}
-        alt=""
-        width={41}
-        height={41}
-        className="relative ml-[12px] size-[41px] -rotate-45"
-        style={{ objectFit: "contain" }}
-      />
-      <span className="relative mt-[17px] w-[135px] text-[21px] leading-[1.21] text-cream">
-        Explore Our Brands
-      </span>
-    </a>
-  );
-}
+// Hidden per client feedback; uncomment this, its usage below and the
+// ".hero-button" tween to bring the "Explore Our Brands" badge back.
+// function ExploreBrandsBadge({ className = "" }: { className?: string }) {
+//   return (
+//     <a
+//       href="/brands"
+//       className={`relative flex size-[210px] shrink-0 flex-col items-center justify-center text-center ${className}`}
+//     >
+//       <div className="pointer-events-none absolute inset-0 animate-[spin_25s_linear_infinite]">
+//         <Image src={img("circle-dashed-lg.png")} alt="" fill sizes="210px" className="object-contain" />
+//       </div>
+//       <Image
+//         src={img("arrow-diagonal.svg")}
+//         alt=""
+//         width={41}
+//         height={41}
+//         className="relative ml-[12px] size-[41px] -rotate-45"
+//         style={{ objectFit: "contain" }}
+//       />
+//       <span className="relative mt-[17px] w-[135px] text-[21px] leading-[1.21] text-cream">
+//         Explore Our Brands
+//       </span>
+//     </a>
+//   );
+// }
 
 export default function Hero() {
   const HeroRef = useRef<HTMLElement>(null);
 
-  useGSAP(() => {
-    const tl = gsap.timeline();
-    tl.to("h1", { clipPath: "inset(0% 0% 0% 0%)", duration: 1 });
-    tl.to(".hero-desc", { opacity: 1, duration: 1 });
-    tl.to(".hero-button", { y: 0, opacity: 1, duration: 1 });
-  });
+  // Wait for the preloader's curtain to lift so the entrance is actually seen
+  const revealed = usePreloaderComplete();
+
+  useGSAP(
+    () => {
+      if (!revealed) return;
+      const tl = gsap.timeline();
+      tl.to("h1", { clipPath: "inset(0% 0% 0% 0%)", duration: 1 });
+      tl.to(".hero-desc", { opacity: 1, duration: 1 });
+      // tl.to(".hero-button", { y: 0, opacity: 1, duration: 1 });
+    },
+    { scope: HeroRef, dependencies: [revealed] },
+  );
   return (
     <section ref={HeroRef} className="relative isolate">
       {/* Decorative light glows and leaf watermark */}
@@ -85,7 +95,7 @@ export default function Hero() {
           ingredients and distinctive packaging with an integrated approach designed for speed to
           market.
         </p>
-        <ExploreBrandsBadge className="hero-button xl:absolute xl:top-[8px] xl:right-[100px] translate-y-[120%] opacity-0" />
+        {/* <ExploreBrandsBadge className="hero-button xl:absolute xl:top-[8px] xl:right-[100px] translate-y-[120%] opacity-0" /> */}
       </div>
     </section>
   );

@@ -132,16 +132,11 @@ export type Category = {
   crop: { left: string; top: string; width: string; height: string };
 };
 
+/** Full-frame crop for the portrait placeholder art (no Figma crop yet). */
+const PLACEHOLDER_CROP = { left: "0%", top: "0%", width: "100%", height: "100%" };
+
+// Order and names per client feedback: Hair, Body, Skin, Men's, Pet, Baby.
 export const categories: Category[] = [
-  {
-    title: "Body & Bath",
-    slug: "body-bath",
-    description:
-      "Body washes, exfoliating washes, lotions and oils designed to make daily body care feel more personal.",
-    descriptionWidth: 271,
-    image: img("category-body-bath.jpg"),
-    crop: { left: "-145.42%", top: "-0.03%", width: "278.59%", height: "100.06%" },
-  },
   {
     title: "Hair Care",
     slug: "hair-care",
@@ -152,13 +147,13 @@ export const categories: Category[] = [
     crop: { left: "-117.4%", top: "-2.73%", width: "218.24%", height: "105.45%" },
   },
   {
-    title: "Men's Grooming",
-    slug: "mens-grooming",
+    title: "Body Care",
+    slug: "body-care",
     description:
-      "Hair and body essentials presented through brands created specifically for men’s everyday needs.",
-    descriptionWidth: 261,
-    image: img("category-mens-grooming.jpg"),
-    crop: { left: "-116.22%", top: "-5.57%", width: "331.58%", height: "116.88%" },
+      "Body washes, lotions, butters, oils and fragrance mists designed to make daily body care feel more personal.",
+    descriptionWidth: 271,
+    image: img("category-body-bath.jpg"),
+    crop: { left: "-145.42%", top: "-0.03%", width: "278.59%", height: "100.06%" },
   },
   {
     title: "Skin Care",
@@ -170,23 +165,54 @@ export const categories: Category[] = [
     crop: { left: "-130.32%", top: "0%", width: "284.17%", height: "100.01%" },
   },
   {
-    title: "Fragrance Mists",
-    slug: "fragrance-mists",
+    title: "Men's Care",
+    slug: "mens-care",
     description:
-      "Fine fragrance mists with juicy, fruit-forward scents that layer easily over everyday body care.",
-    descriptionWidth: 266,
-    image: img("brand-juice-day.png"),
-    crop: { left: "-129.2%", top: "0%", width: "293.7%", height: "100%" },
+      "Hair and body essentials presented through brands created specifically for men’s everyday needs.",
+    descriptionWidth: 261,
+    // category-mens-grooming.jpg actually shows Juice Day mists, so use the Gentleman Supply shot.
+    image: img("brand-gentlemen-supply.jpg"),
+    crop: { left: "-77%", top: "0%", width: "244%", height: "100%" },
   },
   {
-    title: "Lotions & Butters",
-    slug: "lotions-butters",
+    // PLACEHOLDER: copy and image to be replaced with client-supplied content.
+    title: "Pet Care",
+    slug: "pet-care",
     description:
-      "Nourishing lotions and body butters with familiar ingredients like mango, shea and oat milk.",
+      "Gentle, thoughtfully formulated care for the four-legged members of the family, coming soon.",
     descriptionWidth: 266,
-    image: img("portfolio-mango.jpg"),
-    crop: { left: "-93.5%", top: "0%", width: "287.1%", height: "100%" },
+    image: img("category-pet-care-placeholder.svg"),
+    crop: PLACEHOLDER_CROP,
   },
+  {
+    // PLACEHOLDER: copy and image to be replaced with client-supplied content.
+    title: "Baby Care",
+    slug: "baby-care",
+    description:
+      "Mild, caring essentials made with familiar ingredients for little ones' everyday routines, coming soon.",
+    descriptionWidth: 266,
+    image: img("category-baby-care-placeholder.svg"),
+    crop: PLACEHOLDER_CROP,
+  },
+  // Hidden per client feedback; their products now live under Body Care.
+  // {
+  //   title: "Fragrance Mists",
+  //   slug: "fragrance-mists",
+  //   description:
+  //     "Fine fragrance mists with juicy, fruit-forward scents that layer easily over everyday body care.",
+  //   descriptionWidth: 266,
+  //   image: img("brand-juice-day.png"),
+  //   crop: { left: "-129.2%", top: "0%", width: "293.7%", height: "100%" },
+  // },
+  // {
+  //   title: "Lotions & Butters",
+  //   slug: "lotions-butters",
+  //   description:
+  //     "Nourishing lotions and body butters with familiar ingredients like mango, shea and oat milk.",
+  //   descriptionWidth: 266,
+  //   image: img("portfolio-mango.jpg"),
+  //   crop: { left: "-93.5%", top: "0%", width: "287.1%", height: "100%" },
+  // },
 ];
 
 /**
@@ -373,6 +399,9 @@ export const retailers = [
   { name: "Burlington", src: img("retailer-burlington.png"), width: 261.9, height: 73.2, offset: 8.6 },
   { name: "Ross Dress for Less", src: img("retailer-ross.png"), width: 136, height: 58.4, offset: 14.8 },
   { name: "dd's Discounts", src: img("retailer-dds.png"), width: 134.8, height: 76.8, offset: 0 },
+  // PLACEHOLDER wordmarks: swap in the official logo files from the client.
+  { name: "Dollar Tree", src: img("retailer-dollar-tree-placeholder.svg"), width: 280, height: 73.5, offset: 12 },
+  { name: "Walmart.com", src: img("retailer-walmart-com-placeholder.svg"), width: 300, height: 73.5, offset: 12 },
 ];
 
 export const capabilities = [

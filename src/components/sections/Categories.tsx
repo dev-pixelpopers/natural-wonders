@@ -14,7 +14,9 @@ gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin);
 
 function CategoryCard({ category, index }: { category: Category; index: number }) {
   return (
-    <article
+      
+    <Link
+      href={`/categories/${category.slug}`}
       data-category-card
       className="group relative h-[460px] w-[86vw] max-w-[360px] shrink-0 snap-start select-none transition-transform duration-300 hover:-translate-y-1.5 sm:h-[500px] sm:w-[calc((100%-32px)/2)] sm:max-w-none lg:h-[540px] lg:w-[calc((100%-64px)/3)]"
     >
@@ -58,16 +60,16 @@ function CategoryCard({ category, index }: { category: Category; index: number }
         </div>
 
         <div className="mt-auto border-t border-forest/10 pt-4">
-          <Link
-            href={`/categories/${category.slug}`}
+          <div
             className="inline-flex items-center gap-1.5 text-[13px] font-medium tracking-[0.02em] text-forest underline decoration-forest/30 transition-colors hover:text-sage hover:decoration-sage sm:text-[14px]"
           >
             Explore Category
             <span aria-hidden>→</span>
-          </Link>
+          </div>
         </div>
       </div>
-    </article>
+    </Link>
+  
   );
 }
 

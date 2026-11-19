@@ -25,7 +25,7 @@ export const brandDetails: Record<string, BrandDetail> = {
       "Natural Wunderz began with a simple idea: everyday beauty should feel enjoyable and uncomplicated. Every formula starts from familiar ingredients like guava, papaya, mango and coconut milk, paired with textures that make a daily routine feel like a small treat.",
       "The result is a collection of washes, lotions and treatments with a down-to-earth personality, priced to be part of every week rather than saved for special occasions.",
     ],
-    categories: ["Body & Bath", "Lotions & Butters", "Hair Care", "Skin Care"],
+    categories: ["Hair Care", "Body Care", "Skin Care"],
     highlights: [
       { title: "Fruit-forward formulas", body: "Guava, papaya, passion fruit and mango paired with shea butter, oat and coconut milks." },
       { title: "Sensory first", body: "Fragrances and textures developed in-house to make daily care feel enjoyable." },
@@ -49,7 +49,7 @@ export const brandDetails: Record<string, BrandDetail> = {
       "Gentlemen Supply brings an understated character to daily rituals. The range is built around a few products that do their job well, with warm, woody fragrances and clean, practical packaging.",
       "Every product is developed specifically for men's everyday needs, so the routine stays short and the results stay consistent.",
     ],
-    categories: ["Men's Grooming", "Hair Care", "Body & Bath"],
+    categories: ["Hair Care", "Body Care", "Men's Care"],
     highlights: [
       { title: "Beard & hair oils", body: "Lightweight conditioning oils that tame, soften and add a subtle finish." },
       { title: "Hair & body essentials", body: "Washes and conditioners that keep the daily routine simple." },
@@ -70,7 +70,7 @@ export const brandDetails: Record<string, BrandDetail> = {
       "Juice Day channels a fruit-stand personality into body care. Bright colours, juicy fragrances and playful names make caring for yourself feel lighthearted and full of possibility.",
       "The collection focuses on body washes, scrubs and lotions that turn an ordinary shower into a small moment of escape.",
     ],
-    categories: ["Body & Bath", "Fragrance Mists", "Skin Care"],
+    categories: ["Body Care", "Skin Care"],
     highlights: [
       { title: "Juicy fragrances", body: "Fruit-inspired scents developed to feel bright, fresh and fun." },
       { title: "Colourful by design", body: "Packaging made to stand out and bring energy to the shelf." },
@@ -91,7 +91,7 @@ export const brandDetails: Record<string, BrandDetail> = {
       "Suzu was created around the idea that daily body care can be an artful, grounding ritual. Drawing inspiration from Japanese bathing culture and minimalist aesthetics, each formulation is designed to engage the senses through delicate fruit essences, petal-soft hydration, and comforting base notes.",
       "From nourishing body oils that impart an instant golden glow to refreshing exfoliating washes and lingering fragrance mists, Suzu transforms everyday skincare into a luxurious, elevated experience.",
     ],
-    categories: ["Body & Bath", "Fragrance Mists", "Skin Care"],
+    categories: ["Body Care", "Skin Care"],
     highlights: [
       {
         title: "Luminous dry body oils",
@@ -142,7 +142,7 @@ export const brandDetails: Record<string, BrandDetail> = {
 
 export const stats = [
   { value: "30", suffix: "yrs", label: "Manufacturing experience" },
-  { value: "5,500", suffix: "+", label: "US retail stores" },
+  { value: "16,000", suffix: "+", label: "US retail stores" },
   { value: "6", suffix: "", label: "Core product categories" },
   { value: "6", suffix: "", label: "Brands in our portfolio" },
 ];
@@ -170,7 +170,7 @@ export const milestones = [
   { year: "1990s", text: "Our founders begin manufacturing personal-care products in Southern California." },
   { year: "2000s", text: "In-house formulation and fragrance development expand the product range." },
   { year: "2010s", text: "Natural Wunderz launches, followed by a growing family of distinct brands." },
-  { year: "Today", text: "Our products reach more than 5,500 US stores through leading off-price and online retailers." },
+  { year: "Today", text: "Our products reach more than 16,000 US stores through leading off-price and online retailers." },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -252,8 +252,8 @@ export const resources = [
     title: "Why body care keeps growing",
     body: "How sensory formulas and fruit-forward fragrances are reshaping everyday body routines.",
     image: img("category-body-bath.jpg"),
-    href: "/products#body-bath",
-    cta: "See Body & Bath",
+    href: "/products#body-care",
+    cta: "See Body Care",
   },
   {
     kind: "Retail",

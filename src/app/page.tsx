@@ -1,10 +1,13 @@
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { Brands } from "@/components/sections/brands/Brands";
+// Previous scroll-stacked version, kept for reference; uncomment to switch back.
+// import { Brands } from "@/components/sections/brands/Brands";
+import { BrandsNew } from "@/components/sections/brands/BrandsNew";
 import { Capabilities } from "@/components/sections/Capabilities";
 import { Categories } from "@/components/sections/Categories";
 import { Contact } from "@/components/sections/Contact";
 import Hero from "@/components/sections/Hero";
-import { Portfolio } from "@/components/sections/Portfolio";
+// Hidden per client feedback; uncomment to bring the section back.
+// import { Portfolio } from "@/components/sections/Portfolio";
 import { Reach } from "@/components/sections/Reach";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { WhyBrands } from "@/components/sections/WhyBrands";
@@ -14,9 +17,10 @@ export default function Home() {
     <>
       <main className="relative overflow-x-clip bg-forest">
         <Hero />
-        <Brands />
+        {/* <Brands /> */}
+        <BrandsNew />
         <Categories />
-        <Portfolio />
+        {/* <Portfolio /> */}
         <WhyBrands />
         <Reach />
         <Capabilities />

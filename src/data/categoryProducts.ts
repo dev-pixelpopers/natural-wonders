@@ -1,14 +1,16 @@
 export type CategorySlug =
-  | "body-bath"
   | "hair-care"
-  | "mens-grooming"
-  | "lotions-butters"
-  | "fragrance-mists"
-  | "skin-care";
+  | "body-care"
+  | "skin-care"
+  | "mens-care"
+  | "pet-care"
+  | "baby-care";
 
 export type CategoryProduct = {
   id: string;
   name: string;
+  /** 12–16 word card description. */
+  summary: string;
   brand: string;
   brandSlug: string;
   categorySlug: CategorySlug;
@@ -33,9 +35,9 @@ export type CategorySpotlight = {
 
 export const categorySpotlights: CategorySpotlight[] = [
   {
-    slug: "body-bath",
-    title: "Nourishing Body & Bath",
-    subtitle: "Exfoliating Washes & Cream Body Cleansers",
+    slug: "body-care",
+    title: "Nourishing Body Care",
+    subtitle: "Washes, Lotions, Butters & Fragrance Mists",
     description:
       "Formulated with botanical oils, pure plant extracts, and gentle fruit enzymes. Available in 32 fl oz value sizes and everyday travel formats, free of sulfates and parabens.",
     brand: "Natural Wunderz",
@@ -67,7 +69,7 @@ export const categorySpotlights: CategorySpotlight[] = [
     ],
   },
   {
-    slug: "mens-grooming",
+    slug: "mens-care",
     title: "All-in-One Men's Care",
     subtitle: "5-in-1 Head-to-Toe Power Washes",
     description:
@@ -83,40 +85,41 @@ export const categorySpotlights: CategorySpotlight[] = [
       "Bold, woodsy & citrus fragrances",
     ],
   },
-  {
-    slug: "lotions-butters",
-    title: "Lotions & Whipped Butters",
-    subtitle: "24-Hour Deep Barrier Hydration",
-    description:
-      "From silky 32 fl oz pump lotions enriched with oat milk and mango butter to decadent air-whipped body butters by Juice Day, formulated to seal in continuous moisture.",
-    brand: "Natural Wunderz & Juice Day",
-    brandSlug: "natural-wunderz",
-    presentationImage:
-      "/assets/images/brands/natural wunderz/body care/Body Lotion/Presentation - LT.png",
-    keyBenefits: [
-      "24-hour continuous moisture lock",
-      "Non-greasy, fast absorption",
-      "Plant-derived butter blends",
-      "Nourishing vitamins C and E",
-    ],
-  },
-  {
-    slug: "fragrance-mists",
-    title: "Fine Fragrance Mists",
-    subtitle: "Juicy, Layerable & Long-Lasting Scent",
-    description:
-      "Fruit-forward and gourmand fragrance mists from Juice Day and Suzu, designed for everyday hair and body spritzing without harsh alcohol notes.",
-    brand: "Juice Day & Suzu",
-    brandSlug: "juice-day",
-    presentationImage:
-      "/assets/images/brands/suzu/body care - guava with passion fruit/Presentation.png",
-    keyBenefits: [
-      "Lightweight, skin-loving mist",
-      "Hair & body multi-use spray",
-      "Layerable tropical fragrances",
-      "Fine atomizing spray nozzle",
-    ],
-  },
+  // Hidden per client feedback; these products now live under Body Care.
+  // {
+  //   slug: "lotions-butters",
+  //   title: "Lotions & Whipped Butters",
+  //   subtitle: "24-Hour Deep Barrier Hydration",
+  //   description:
+  //     "From silky 32 fl oz pump lotions enriched with oat milk and mango butter to decadent air-whipped body butters by Juice Day, formulated to seal in continuous moisture.",
+  //   brand: "Natural Wunderz & Juice Day",
+  //   brandSlug: "natural-wunderz",
+  //   presentationImage:
+  //     "/assets/images/brands/natural wunderz/body care/Body Lotion/Presentation - LT.png",
+  //   keyBenefits: [
+  //     "24-hour continuous moisture lock",
+  //     "Non-greasy, fast absorption",
+  //     "Plant-derived butter blends",
+  //     "Nourishing vitamins C and E",
+  //   ],
+  // },
+  // {
+  //   slug: "fragrance-mists",
+  //   title: "Fine Fragrance Mists",
+  //   subtitle: "Juicy, Layerable & Long-Lasting Scent",
+  //   description:
+  //     "Fruit-forward and gourmand fragrance mists from Juice Day and Suzu, designed for everyday hair and body spritzing without harsh alcohol notes.",
+  //   brand: "Juice Day & Suzu",
+  //   brandSlug: "juice-day",
+  //   presentationImage:
+  //     "/assets/images/brands/suzu/body care - guava with passion fruit/Presentation.png",
+  //   keyBenefits: [
+  //     "Lightweight, skin-loving mist",
+  //     "Hair & body multi-use spray",
+  //     "Layerable tropical fragrances",
+  //     "Fine atomizing spray nozzle",
+  //   ],
+  // },
   {
     slug: "skin-care",
     title: "Skin & Scalp Treatments",
@@ -137,13 +140,14 @@ export const categorySpotlights: CategorySpotlight[] = [
 ];
 
 export const categoryProducts: CategoryProduct[] = [
-  // --- BODY & BATH ---
+  // --- BODY CARE ---
   {
     id: "nw-eb-guava",
     name: "Guava Exfoliating Body Wash",
+    summary: "Gently exfoliating body wash with tropical guava that buffs, cleanses and leaves skin feeling hydrated.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Exfoliating Wash",
     scent: "Tropical Guava & Fruit Extracts",
     size: "32 fl oz (946 ml)",
@@ -154,9 +158,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-eb-mango",
     name: "Mango & Honey Exfoliating Body Wash",
+    summary: "Ripe mango and pure honey polish away dullness for brighter, softer, deeply cleansed skin every day.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Exfoliating Wash",
     scent: "Ripe Mango & Pure Honey",
     size: "32 fl oz (946 ml)",
@@ -166,9 +171,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-eb-passion",
     name: "Passion Fruit Exfoliating Body Wash",
+    summary: "A refreshing passion fruit scrub wash that smooths rough skin with a bright, juicy botanical scent.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Exfoliating Wash",
     scent: "Passion Fruit & Botanical Nectar",
     size: "32 fl oz (946 ml)",
@@ -178,9 +184,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-bw-guava",
     name: "Guava + Coconut Milk Cream Body Wash",
+    summary: "Pink guava and creamy coconut milk whip into a rich lather that leaves skin silky soft.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Cream Body Wash",
     scent: "Pink Guava & Creamy Coconut",
     size: "32 fl oz (946 ml)",
@@ -191,9 +198,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-bw-mango",
     name: "Mango + Oat Milk Cream Body Wash",
+    summary: "A gentle cream body wash with mango and soothing oat milk, kind to sensitive skin.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Cream Body Wash",
     scent: "Juicy Mango & Soothing Oat",
     size: "32 fl oz (946 ml)",
@@ -203,9 +211,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-bw-papaya",
     name: "Papaya + Shea Butter Cream Body Wash",
+    summary: "Papaya and raw shea butter cleanse while sealing in moisture for a velvety, nourished feel.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Cream Body Wash",
     scent: "Papaya & Raw Shea Butter",
     size: "32 fl oz (946 ml)",
@@ -215,9 +224,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-bw-pink-guava",
     name: "Pink Guava & Passion Fruit Wash",
+    summary: "A juicy pink guava and passion fruit wash that rinses clean and leaves skin refreshed.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Hydrating Body Wash",
     scent: "Pink Guava & Passion Blossom",
     size: "16 fl oz",
@@ -227,9 +237,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-bw-mango",
     name: "Mango Nectar & Golden Amber Wash",
+    summary: "Mango nectar and warm golden amber foam into a rich lather with all-day tropical freshness.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Hydrating Body Wash",
     scent: "Mango Nectar & Warm Amber",
     size: "16 fl oz",
@@ -239,9 +250,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-bw-coconut",
     name: "Coconut Milk & Vanilla Wash",
+    summary: "Sweet coconut milk and vanilla make a comforting, hydrating wash for calm everyday shower moments.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Hydrating Body Wash",
     scent: "Sweet Coconut Milk & Vanilla",
     size: "16 fl oz",
@@ -251,9 +263,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "suzu-bw-strawberry",
     name: "Strawberry & Vanilla Silkening Wash",
+    summary: "A silkening body wash with wild strawberry and gourmand vanilla for a soft, luminous glow.",
     brand: "Suzu",
     brandSlug: "suzu",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Silkening Body Wash",
     scent: "Wild Strawberry & Gourmand Vanilla",
     size: "16 fl oz",
@@ -263,9 +276,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "suzu-bw-guava",
     name: "Guava & Passion Fruit Silkening Wash",
+    summary: "Sunlit guava and passion blossom gently cleanse, leaving skin softened, glowing and lightly scented.",
     brand: "Suzu",
     brandSlug: "suzu",
-    categorySlug: "body-bath",
+    categorySlug: "body-care",
     subCategory: "Silkening Body Wash",
     scent: "Sunlit Guava & Passion Blossom",
     size: "16 fl oz",
@@ -277,6 +291,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-rosemary-shampoo",
     name: "Rosemary Scalp Care Stimulating Shampoo",
+    summary: "An invigorating rosemary and spearmint shampoo that clarifies the scalp and helps strengthen hair from root.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -290,6 +305,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-rosemary-cond",
     name: "Rosemary Scalp Care Strengthening Conditioner",
+    summary: "A weightless rosemary conditioner that detangles easily and helps defend strands against everyday breakage.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -302,6 +318,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-rosemary-serum",
     name: "Rosemary Scalp & Hair Serum",
+    summary: "Biotin-infused rosemary and peppermint drops that target the scalp to support fuller-looking, healthier hair.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -315,6 +332,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-keratin-shampoo",
     name: "Keratin Anti-Frizz Smoothing Shampoo",
+    summary: "A keratin smoothing shampoo with silk bloom and white tea that shields hair from frizzy humidity.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -327,6 +345,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-keratin-cond",
     name: "Keratin Anti-Frizz Smoothing Conditioner",
+    summary: "Keratin protein seals the cuticle to control frizz and leave hair touchably soft and sleek.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -339,6 +358,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-keratin-treatment",
     name: "Keratin Leave-In Smoothing Treatment",
+    summary: "A leave-in keratin treatment that protects against heat, shields split ends and adds instant manageability.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -351,6 +371,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-castor-shampoo",
     name: "Castor Curl Restore Hydrating Shampoo",
+    summary: "A non-stripping black castor oil shampoo that cleanses curls while locking in essential moisture.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -363,6 +384,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-castor-cond",
     name: "Castor Curl Restore Defining Conditioner",
+    summary: "A rich castor oil conditioner with easy slip that detangles, moisturizes and boosts curl elasticity.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -375,6 +397,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-hair-castor-cream",
     name: "Castor Curl Defining Styling Cream",
+    summary: "A castor oil styling cream for soft, flexible hold and bouncy, defined curls without flaking.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "hair-care",
@@ -385,13 +408,14 @@ export const categoryProducts: CategoryProduct[] = [
     image: "/assets/images/brands/natural wunderz/hair care/Castor Curl Restore - Line/Castor - Curl Defining Cream.png",
   },
 
-  // --- MEN'S GROOMING ---
+  // --- MEN'S CARE ---
   {
     id: "nw-men-citrus",
     name: "5-in-1 All Day Wash - Cedar & Fresh Citrus",
+    summary: "One wash for body, face, hair and beard, with crisp cedar and fresh citrus.",
     brand: "Natural Wunderz Men",
     brandSlug: "natural-wunderz",
-    categorySlug: "mens-grooming",
+    categorySlug: "mens-care",
     subCategory: "5-in-1 Power Wash",
     scent: "Cedar Wood & Crisp Citrus",
     size: "32 fl oz (946 ml)",
@@ -402,9 +426,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-men-sage",
     name: "5-in-1 Head to Toe Wash - Bergamot & Sage",
+    summary: "A pH-balanced head-to-toe wash with bergamot and mountain sage that handles the full routine.",
     brand: "Natural Wunderz Men",
     brandSlug: "natural-wunderz",
-    categorySlug: "mens-grooming",
+    categorySlug: "mens-care",
     subCategory: "5-in-1 Power Wash",
     scent: "Bergamot & Herbal Mountain Sage",
     size: "32 fl oz (946 ml)",
@@ -414,9 +439,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-men-sea-salt",
     name: "5-in-1 Power Wash - Sea Salt & Cedar",
+    summary: "Mineral-powered sea salt and cedar wash that cleans deep and defends against sweat and odor.",
     brand: "Natural Wunderz Men",
     brandSlug: "natural-wunderz",
-    categorySlug: "mens-grooming",
+    categorySlug: "mens-care",
     subCategory: "5-in-1 Power Wash",
     scent: "Atlantic Sea Salt & Deep Cedar",
     size: "32 fl oz (946 ml)",
@@ -426,9 +452,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-men-sandalwood",
     name: "5-in-1 Total Wash - Amber & Sandalwood",
+    summary: "A rich amber and sandalwood 5-in-1 wash that hydrates skin and softens the beard.",
     brand: "Natural Wunderz Men",
     brandSlug: "natural-wunderz",
-    categorySlug: "mens-grooming",
+    categorySlug: "mens-care",
     subCategory: "5-in-1 Power Wash",
     scent: "Smoky Amber & Sandalwood",
     size: "32 fl oz (946 ml)",
@@ -436,13 +463,14 @@ export const categoryProducts: CategoryProduct[] = [
     image: "/assets/images/brands/natural wunderz/Mens/5-in-1 Total Wash - Amber & Sandalwood.png",
   },
 
-  // --- LOTIONS & BUTTERS ---
+  // --- BODY CARE: LOTIONS & BUTTERS ---
   {
     id: "nw-lt-mango",
     name: "Mango + Oat Milk Daily Body Lotion",
+    summary: "A non-greasy mango and oat milk lotion that locks in moisture for 24 comfortable hours.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "lotions-butters",
+    categorySlug: "body-care",
     subCategory: "Daily Hydrating Lotion",
     scent: "Juicy Mango & Soothing Oat",
     size: "32 fl oz (946 ml)",
@@ -453,9 +481,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-lt-guava",
     name: "Guava + Coconut Milk Nourishing Body Lotion",
+    summary: "Guava and coconut milk lotion that absorbs fast and supports a soft, healthy skin barrier.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "lotions-butters",
+    categorySlug: "body-care",
     subCategory: "Daily Hydrating Lotion",
     scent: "Tropical Guava & Coconut Milk",
     size: "32 fl oz (946 ml)",
@@ -465,9 +494,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-lt-papaya",
     name: "Papaya + Shea Butter Rich Body Lotion",
+    summary: "A rich papaya and shea butter lotion with vitamin E for intensive relief from dry skin.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
-    categorySlug: "lotions-butters",
+    categorySlug: "body-care",
     subCategory: "Nourishing Body Lotion",
     scent: "Sun-Ripened Papaya & Raw Shea",
     size: "32 fl oz (946 ml)",
@@ -477,9 +507,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-bt-pink-guava",
     name: "Pink Guava & Passion Fruit Whipped Butter",
+    summary: "An air-whipped pink guava and passion fruit butter that melts into skin with lasting scent.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "lotions-butters",
+    categorySlug: "body-care",
     subCategory: "Whipped Body Butter",
     scent: "Pink Guava & Passion Fruit",
     size: "8 oz (227g)",
@@ -490,9 +521,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-bt-mango",
     name: "Mango Nectar & Golden Amber Whipped Butter",
+    summary: "Ultra-rich whipped butter with mango nectar and warm amber to deeply replenish thirsty summer skin.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "lotions-butters",
+    categorySlug: "body-care",
     subCategory: "Whipped Body Butter",
     scent: "Mango Nectar & Warm Amber",
     size: "8 oz (227g)",
@@ -502,9 +534,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-bt-coconut",
     name: "Coconut Milk & Vanilla Whipped Butter",
+    summary: "A velvety coconut milk and Madagascar vanilla butter with a rich, comforting cream texture.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "lotions-butters",
+    categorySlug: "body-care",
     subCategory: "Whipped Body Butter",
     scent: "Coconut Milk & Madagascar Vanilla",
     size: "8 oz (227g)",
@@ -512,13 +545,14 @@ export const categoryProducts: CategoryProduct[] = [
     image: "/assets/images/brands/juiceday/body care - coconut milk & vanilla/Butter.png",
   },
 
-  // --- FRAGRANCE MISTS ---
+  // --- BODY CARE: FRAGRANCE MISTS ---
   {
     id: "jd-mist-pink-guava",
     name: "Pink Guava & Passion Fruit Fine Mist",
+    summary: "A light, layerable fragrance mist of pink guava and passion fruit with long-lasting fruity notes.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "fragrance-mists",
+    categorySlug: "body-care",
     subCategory: "Fine Fragrance Mist",
     scent: "Pink Guava & Tropical Passion",
     size: "8 fl oz (236 ml)",
@@ -529,9 +563,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-mist-mango",
     name: "Mango Nectar & Golden Amber Fine Mist",
+    summary: "Golden mango and warm amber in a refreshing multi-use mist for body and hair.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "fragrance-mists",
+    categorySlug: "body-care",
     subCategory: "Fine Fragrance Mist",
     scent: "Golden Mango & Warm Amber",
     size: "8 fl oz (236 ml)",
@@ -541,9 +576,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "jd-mist-coconut",
     name: "Coconut Milk & Vanilla Fine Mist",
+    summary: "A sweet gourmand mist of coconut and warm vanilla that lifts the mood with every spritz.",
     brand: "Juice Day",
     brandSlug: "juice-day",
-    categorySlug: "fragrance-mists",
+    categorySlug: "body-care",
     subCategory: "Fine Fragrance Mist",
     scent: "Sweet Coconut & Warm Vanilla",
     size: "8 fl oz (236 ml)",
@@ -553,9 +589,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "suzu-mist-strawberry",
     name: "Strawberry & Vanilla Fine Fragrance Mist",
+    summary: "A Japanese-inspired fragrance mist of wild strawberry and velvety vanilla with a fine, airy spray.",
     brand: "Suzu",
     brandSlug: "suzu",
-    categorySlug: "fragrance-mists",
+    categorySlug: "body-care",
     subCategory: "Fine Fragrance Mist",
     scent: "Wild Strawberry & Velvety Vanilla",
     size: "8 fl oz (236 ml)",
@@ -565,9 +602,10 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "suzu-mist-guava",
     name: "Guava & Passion Fruit Fine Fragrance Mist",
+    summary: "Sparkling guava and passion bloom in an uplifting hair and body mist with a delicate scent.",
     brand: "Suzu",
     brandSlug: "suzu",
-    categorySlug: "fragrance-mists",
+    categorySlug: "body-care",
     subCategory: "Fine Fragrance Mist",
     scent: "Sparkling Guava & Passion Bloom",
     size: "8 fl oz (236 ml)",
@@ -579,6 +617,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "suzu-oil-strawberry",
     name: "Strawberry & Vanilla Illuminating Body Oil",
+    summary: "A fast-absorbing dry body oil with camellia and jojoba that leaves a luminous golden glow.",
     brand: "Suzu",
     brandSlug: "suzu",
     categorySlug: "skin-care",
@@ -592,6 +631,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "suzu-oil-guava",
     name: "Guava & Passion Fruit Illuminating Body Oil",
+    summary: "A guava and passion blossom body oil with a dewy satin finish and non-sticky hydration.",
     brand: "Suzu",
     brandSlug: "suzu",
     categorySlug: "skin-care",
@@ -604,6 +644,7 @@ export const categoryProducts: CategoryProduct[] = [
   {
     id: "nw-skin-rosemary-drops",
     name: "Rosemary Scalp & Skin Nutrient Serum",
+    summary: "Concentrated rosemary and mint nutrient drops, biotin fortified, for targeted scalp and skin treatment.",
     brand: "Natural Wunderz",
     brandSlug: "natural-wunderz",
     categorySlug: "skin-care",

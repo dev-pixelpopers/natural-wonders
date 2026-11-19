@@ -4,10 +4,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PageHero } from "@/components/layout/PageHero";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { BrandCollection } from "@/components/sections/brands/BrandCollection";
 import { Contact } from "@/components/sections/Contact";
 import { CornerCard } from "@/components/ui/CornerCard";
 import { PillLink } from "@/components/ui/PillLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { categoryProducts } from "@/data/categoryProducts";
 import { brands, categories } from "@/data/content";
 import { brandDetails } from "@/data/pages";
 import { img } from "@/lib/design";
@@ -32,6 +34,7 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
   if (!brand || !detail) notFound();
 
   const others = brands.filter((b) => b.slug !== slug);
+  const brandProducts = categoryProducts.filter((p) => p.brandSlug === slug);
   const brandCategories = categories.filter((c) => detail.categories.includes(c.title));
 
   return (
@@ -129,7 +132,10 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
             height={410}
             className="pointer-events-none absolute top-[60px] right-[-120px] -z-10 h-auto w-[min(793px,60vw)] max-w-none rotate-[7.64deg] opacity-80"
           />
-          <SectionHeading layout="split" title="The Collection" body={`A look at products from the ${brand.name} range.`} className="mx-auto max-w-[1650px]" />
+          <SectionHeading layout="split" title="The Collection" body={`Browse the ${brand.name} range by category.`} className="mx-auto max-w-[1650px]" />
+          <BrandCollection brandName={brand.name} products={brandProducts} />
+
+          {/* Previous image-only gallery (brandDetails.gallery), kept for reference.
           <ul className="mx-auto mt-16 grid max-w-[1650px] auto-rows-[260px] grid-cols-2 gap-4 md:auto-rows-[340px] md:grid-cols-4 md:gap-6">
             {detail.gallery.map((g, i) => (
               <li
@@ -143,9 +149,13 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
                   sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"}
                   className="object-cover transition-transform duration-700 hover:scale-105"
                 />
+                <div>
+                  <h2>HEllo</h2>
+                </div>
               </li>
             ))}
           </ul>
+          */}
         </section>
 
         {/* Categories this brand covers */}

@@ -14,12 +14,15 @@ import { categories } from "@/data/content";
 
 const categoryFilterTabs: { id: "all" | CategorySlug; label: string }[] = [
   { id: "all", label: "All Categories" },
-  { id: "body-bath", label: "Body & Bath" },
   { id: "hair-care", label: "Hair Care" },
-  { id: "mens-grooming", label: "Men's Grooming" },
-  { id: "lotions-butters", label: "Lotions & Butters" },
-  { id: "fragrance-mists", label: "Fragrance Mists" },
+  { id: "body-care", label: "Body Care" },
   { id: "skin-care", label: "Skin Care" },
+  { id: "mens-care", label: "Men's Care" },
+  { id: "pet-care", label: "Pet Care" },
+  { id: "baby-care", label: "Baby Care" },
+  // Hidden per client feedback; merged into Body Care.
+  // { id: "lotions-butters", label: "Lotions & Butters" },
+  // { id: "fragrance-mists", label: "Fragrance Mists" },
 ];
 
 const brandFilterTabs = [

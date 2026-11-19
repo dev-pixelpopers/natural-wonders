@@ -11,10 +11,10 @@ gsap.registerPlugin(useGSAP);
 /**
  * Preloader — Figma "Natural Wunderz Preloader" component set (node 438:64).
  *
- * The seven Figma variants are the keyframes of one sequence: each step lifts
- * a bottle out of a blur from below the fold, rolls the counter to the next
- * value and extends the progress bar. The final step (100) waits until the
- * page has actually finished loading before it plays.
+ * A real preloader: the counter and progress bar follow actual loading progress
+ * (eagerly loaded images, web fonts and the window `load` event), each bottle
+ * rises once progress passes its share of 100, and the curtain lifts as soon as
+ * the page is ready (or after `maxWait`), never on a fixed timer.
  */
 
 type Bottle = {
@@ -35,47 +35,92 @@ const BOTTLES: readonly Bottle[] = [
   { file: "preloader/product-06.png", width: 120, height: 515, reveal: 5 },
 ];
 
-/** Counter value and bar fill (Figma bar width / 1820px track) per variant. */
-const STEPS: readonly { value: number; fill: number }[] = [
-  { value: 10, fill: 200 / 1820 },
-  { value: 20, fill: 500 / 1820 },
-  { value: 60, fill: 900 / 1820 },
-  { value: 80, fill: 1400 / 1820 },
-  { value: 90, fill: 1550 / 1820 },
-  { value: 100, fill: 1 },
-];
-
-/** First row is the blank "Default" state before any bottle has landed. */
-const COUNTER_ROWS = [" ", ...STEPS.map((s) => String(s.value))];
-
 const BLUR = "blur(12.5px)";
 
+/** Shortest time the loader stays up (s), so a cached page doesn't just flash it. */
+const MIN_VISIBLE = 1.2;
+
 export type PreloaderProps = {
+  /** Called when the curtain starts lifting, so page entrances can play as it uncovers. */
+  onReveal?: () => void;
   /** Called once the exit transition has finished and the page is uncovered. */
   onComplete?: () => void;
-  /** Upper bound (ms) to wait for the window `load` event before finishing anyway. */
+  /** Upper bound (ms) to wait for loading before finishing anyway. */
   maxWait?: number;
   className?: string;
 };
 
-/** Resolves once fonts and every page resource have loaded, or after `maxWait`. */
-function whenPageReady(maxWait: number): Promise<void> {
-  const loaded = new Promise<void>((resolve) => {
-    if (document.readyState === "complete") resolve();
-    else window.addEventListener("load", () => resolve(), { once: true });
+/**
+ * Tracks real page loading. Reports 0–1 as eagerly loaded images and web fonts
+ * finish, and 1 once the window `load` event has fired (or `maxWait` passes).
+ * Lazy images are skipped: they only load when scrolled to, so they'd never finish here.
+ */
+function trackLoading(onProgress: (p: number) => void, maxWait: number) {
+  const images = Array.from(document.images).filter((im) => im.loading !== "lazy");
+  // Each image and the fonts count as one unit; the window `load` event is the final unit.
+  const total = images.length + 2;
+  let done = 0;
+  let finished = false;
+
+  const report = () => {
+    if (!finished) onProgress(Math.min(done / total, 0.99));
+  };
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    onProgress(1);
+  };
+  const tick = () => {
+    done += 1;
+    report();
+  };
+
+  const cleanups: (() => void)[] = [];
+  images.forEach((im) => {
+    if (im.complete) {
+      done += 1;
+      return;
+    }
+    const once = () => {
+      im.removeEventListener("load", once);
+      im.removeEventListener("error", once);
+      tick();
+    };
+    im.addEventListener("load", once);
+    im.addEventListener("error", once); // a broken image shouldn't block the page
+    cleanups.push(() => {
+      im.removeEventListener("load", once);
+      im.removeEventListener("error", once);
+    });
   });
-  const fonts = document.fonts?.ready.then(() => undefined) ?? Promise.resolve();
-  const timeout = new Promise<void>((resolve) => window.setTimeout(resolve, maxWait));
-  return Promise.race([Promise.all([loaded, fonts]).then(() => undefined), timeout]);
+
+  (document.fonts?.ready ?? Promise.resolve()).then(tick);
+
+  if (document.readyState === "complete") window.setTimeout(finish, 0);
+  else {
+    window.addEventListener("load", finish, { once: true });
+    cleanups.push(() => window.removeEventListener("load", finish));
+  }
+
+  const timeout = window.setTimeout(finish, maxWait);
+  report();
+
+  return () => {
+    finished = true;
+    window.clearTimeout(timeout);
+    cleanups.forEach((fn) => fn());
+  };
 }
 
-export default function Preloader({ onComplete, maxWait = 8000, className = "" }: PreloaderProps) {
+export default function Preloader({ onReveal, onComplete, maxWait = 8000, className = "" }: PreloaderProps) {
   const root = useRef<HTMLDivElement>(null);
+  const onRevealRef = useRef(onReveal);
   const onCompleteRef = useRef(onComplete);
 
   useEffect(() => {
+    onRevealRef.current = onReveal;
     onCompleteRef.current = onComplete;
-  }, [onComplete]);
+  }, [onReveal, onComplete]);
 
   // Keep the page underneath from scrolling while it is covered.
   useEffect(() => {
@@ -97,6 +142,7 @@ export default function Preloader({ onComplete, maxWait = 8000, className = "" }
         (a, b) => Number(a.dataset.bottle) - Number(b.dataset.bottle),
       );
       const track = q<HTMLElement>("[data-track]")[0];
+      const fill = q<HTMLElement>("[data-fill]")[0];
       const counter = q<HTMLElement>("[data-counter]")[0];
 
       gsap.set(bottles, { y: () => window.innerHeight, filter: blur, autoAlpha: 1 });
@@ -110,65 +156,77 @@ export default function Preloader({ onComplete, maxWait = 8000, className = "" }
         ease: "sine.inOut",
       });
 
-      let waiting = false;
+      let entered = false;
       let exiting = false;
-      let ready = false;
-      const step = 0.55;
+      let fast = false;
+      let target = 0; // real progress, 0–100
+      const shown = { value: 0 }; // what the counter and bar display
+      let revealed = 0; // bottles risen so far
+      const startedAt = performance.now();
 
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      if (reduceMotion) tl.timeScale(2.5);
-
-      // Entrance
-      tl.fromTo(q("[data-glow]"), { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1, duration: 1.4, ease: "power2.out" })
+      // Entrance: glow, label/counter and the empty track.
+      gsap
+        .timeline({ defaults: { ease: "power3.out" }, onComplete: () => (entered = true) })
+        .timeScale(reduceMotion ? 2.5 : 1)
+        .fromTo(q("[data-glow]"), { autoAlpha: 0, scale: 0.9 }, { autoAlpha: 1, scale: 1, duration: 1.4, ease: "power2.out" })
         .to(q("[data-label], [data-count-mask]"), { yPercent: 0, duration: 0.8, stagger: 0.1 }, 0.2)
-        .fromTo(track, { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, 0.3)
-        .addLabel("progress", "-=0.2");
+        .fromTo(track, { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, 0.3);
 
-      // Loading progression: one Figma variant per step.
-      STEPS.forEach(({ value, fill }, i) => {
-        const at = `progress+=${i * step}`;
-        if (i === STEPS.length - 1) {
-          // Hold just before 100 until the page has really finished loading.
-          tl.add(() => {
-            if (!ready) {
-              waiting = true;
-              tl.pause();
-            }
-          }, at);
+      const render = () => {
+        const value = Math.round(shown.value);
+        counter.textContent = String(value);
+        gsap.set(fill, { scaleX: shown.value / 100 });
+        track.setAttribute("aria-valuenow", String(value));
+
+        // One bottle per sixth of progress; the last lands at 100.
+        const due = Math.min(BOTTLES.length, Math.floor((shown.value / 100) * BOTTLES.length + 1e-6));
+        for (; revealed < due; revealed++) {
+          gsap.to(bottles[revealed], { y: 0, filter: "blur(0px)", duration: 1.1, ease: "expo.out" });
         }
-        tl.to(bottles[i], { y: 0, filter: "blur(0px)", duration: 1.1, ease: "expo.out" }, at)
-          .to(counter, { yPercent: (-100 * (i + 1)) / COUNTER_ROWS.length, duration: 0.6, ease: "power4.inOut" }, at)
-          .to(q("[data-fill]"), { scaleX: fill, duration: 0.9, ease: "power3.inOut" }, at)
-          .add(() => track.setAttribute("aria-valuenow", String(value)), at);
-      });
+      };
 
       // Exit: bottles lift away from the centre out, footer drops, curtain rises.
-      tl.addLabel("exit", "+=0.6")
-        .add(() => {
-          exiting = true;
-          dots.kill();
-        }, "exit")
-        .to(q("[data-label], [data-count-mask]"), { yPercent: 110, duration: 0.5, ease: "power2.in" }, "exit")
-        .to(track, { scaleX: 0, transformOrigin: "right center", duration: 0.6, ease: "power2.in" }, "exit")
-        .to(
-          q("[data-bottle-inner]"),
-          {
-            yPercent: -12,
-            autoAlpha: 0,
-            filter: blur,
-            duration: 0.6,
-            ease: "power2.in",
-            stagger: { each: 0.06, from: "center" },
-          },
-          "exit",
-        )
-        .to(root.current, { yPercent: -100, duration: 1, ease: "power4.inOut" }, "exit+=0.45")
-        .add(() => onCompleteRef.current?.());
+      const exit = () => {
+        exiting = true;
+        dots.kill();
+        gsap
+          .timeline()
+          .to(q("[data-label], [data-count-mask]"), { yPercent: 110, duration: 0.5, ease: "power2.in" }, 0.35)
+          .to(track, { scaleX: 0, transformOrigin: "right center", duration: 0.6, ease: "power2.in" }, 0.35)
+          .to(
+            q("[data-bottle-inner]"),
+            {
+              yPercent: -12,
+              autoAlpha: 0,
+              filter: blur,
+              duration: 0.6,
+              ease: "power2.in",
+              stagger: { each: 0.06, from: "center" },
+            },
+            0.35,
+          )
+          .add(() => onRevealRef.current?.(), 0.8)
+          .to(root.current, { yPercent: -100, duration: 1, ease: "power4.inOut" }, 0.8)
+          .add(() => onCompleteRef.current?.());
+      };
 
-      whenPageReady(maxWait).then(() => {
-        ready = true;
-        if (waiting) tl.play();
-      });
+      // Ease the displayed value toward real progress every frame.
+      const update = () => {
+        if (exiting || !entered) return;
+        const gap = target - shown.value;
+        if (gap > 0) {
+          const speed = fast ? 0.35 : 0.08;
+          shown.value = Math.min(target, shown.value + Math.max(gap * speed, 0.35));
+          render();
+        }
+        const minElapsed = (performance.now() - startedAt) / 1000 >= MIN_VISIBLE;
+        if (shown.value >= 100 && minElapsed) exit();
+      };
+      gsap.ticker.add(update);
+
+      const stopTracking = trackLoading((p) => {
+        target = Math.max(target, p * 100);
+      }, maxWait);
 
       // Interactive states ---------------------------------------------------
       const inners = q<HTMLElement>("[data-bottle-inner]");
@@ -197,9 +255,9 @@ export default function Preloader({ onComplete, maxWait = 8000, className = "" }
           .to(inner, { scaleY: 1, scaleX: 1, yPercent: -4, duration: 0.5, ease: "elastic.out(1, 0.4)" });
       });
 
-      // Click the backdrop: fast-forward (the final step still waits for the page).
+      // Click the backdrop: catch the counter up faster (it still can't pass real progress).
       const onSkip = () => {
-        tl.timeScale(Math.max(tl.timeScale(), 3));
+        fast = true;
       };
 
       bottles.forEach((el) => {
@@ -211,6 +269,8 @@ export default function Preloader({ onComplete, maxWait = 8000, className = "" }
       backdrop?.addEventListener("click", onSkip);
 
       return () => {
+        gsap.ticker.remove(update);
+        stopTracking();
         bottles.forEach((el) => {
           el.removeEventListener("pointerenter", onEnter);
           el.removeEventListener("pointerleave", onLeave);
@@ -287,12 +347,8 @@ export default function Preloader({ onComplete, maxWait = 8000, className = "" }
           </p>
 
           <div aria-hidden className="overflow-hidden">
-            <div data-count-mask className="invisible h-[0.85em] overflow-hidden text-right">
-              <div data-counter>
-                {COUNTER_ROWS.map((row, i) => (
-                  <p key={i}>{row}</p>
-                ))}
-              </div>
+            <div data-count-mask className="invisible text-right tabular-nums">
+              <p data-counter>0</p>
             </div>
           </div>
         </div>

@@ -338,6 +338,20 @@ export function SingleCategoryCatalog({
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+        ) : products.length === 0 ? (
+          // Category with no products yet (e.g. new placeholder categories)
+          <div className="mt-12 rounded-[28px] border border-white/10 bg-forest-light/40 py-20 text-center text-cream">
+            <p className="font-valturin text-[28px] uppercase">{categoryTitle} products coming soon</p>
+            <p className="mt-2 text-[15px] text-cream/70">
+              We&rsquo;re developing this range now. Get in touch to hear about it first.
+            </p>
+            <a
+              href="#contact"
+              className="mt-6 inline-block rounded-full bg-mint px-6 py-2.5 font-gotham text-[13px] font-semibold text-forest uppercase"
+            >
+              Get In Touch
+            </a>
+          </div>
         ) : (
           <div className="mt-12 rounded-[28px] border border-white/10 bg-forest-light/40 py-20 text-center text-cream">
             <p className="font-valturin text-[28px] uppercase">No matching products found</p>

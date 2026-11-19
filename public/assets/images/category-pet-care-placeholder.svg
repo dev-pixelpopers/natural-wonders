@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="1000" viewBox="0 0 600 1000" preserveAspectRatio="xMidYMid slice">
+  <!-- Placeholder until the client supplies Pet Care photography -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8FA595"/>
+      <stop offset="1" stop-color="#5E7464"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="1000" fill="url(#g)"/>
+  <path d="M300 330c-90 40-130 130-110 230 100-10 160-90 160-190 0-15-20-40-50-40z" fill="#C2FFD6" opacity=".35"/>
+  <path d="M300 340c-20 80-40 160-90 230" stroke="#F3EEE4" stroke-width="6" fill="none" opacity=".6" stroke-linecap="round"/>
+  <text x="300" y="690" text-anchor="middle" font-family="Georgia, serif" font-size="56" letter-spacing="2" fill="#F3EEE4">PET CARE</text>
+  <text x="300" y="740" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" letter-spacing="6" fill="#F3EEE4" opacity=".75">IMAGE COMING SOON</text>
+</svg>

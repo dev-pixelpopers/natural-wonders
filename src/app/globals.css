@@ -103,3 +103,15 @@ body {
     display: none;
   }
 }
+
+/* Brand page "The Collection": grid fades up when the category filter changes */
+@keyframes collection-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

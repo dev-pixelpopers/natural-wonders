@@ -3,7 +3,8 @@ import { CircleBadge, PageHero } from "@/components/layout/PageHero";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { BrandCard } from "@/components/sections/brands/BrandCard";
 import { Contact } from "@/components/sections/Contact";
-import { Portfolio } from "@/components/sections/Portfolio";
+// Hidden per client feedback; uncomment to bring the section back.
+// import { Portfolio } from "@/components/sections/Portfolio";
 import { PillLink } from "@/components/ui/PillLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { brands } from "@/data/content";
@@ -26,9 +27,9 @@ export default function BrandsPage() {
           crumbs={[{ label: "Our Brands" }]}
           title={
             <>
-              Distinct Brands.
+              Distinctive Brands,
               <br />
-              One Approach.
+              Thoughtfully Made.
             </>
           }
           intro="Explore our family of beauty and personal-care brands. Each has its own personality, ingredient story and product focus, creating distinct collections for different consumers and everyday routines."
@@ -74,15 +75,17 @@ export default function BrandsPage() {
           </ul>
         </section>
 
+        {/* Hidden per client feedback; uncomment to bring the section back.
         <div className="pt-[clamp(72px,8vw,140px)]">
           <Portfolio />
         </div>
+        */}
 
         <section className="px-4 pt-[clamp(96px,10vw,180px)]">
           <SectionHeading
             eyebrow="For Retailers"
             title="Bring Our Brands to Your Shelves."
-            body="Our brands are carried by leading off-price and online retailers across more than 5,500 US stores. Ask for line sheets, pricing and availability."
+            body="Our brands are carried by leading off-price and online retailers across more than 16,000 US stores. Ask for line sheets, pricing and availability."
           />
         </section>
 

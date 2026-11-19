@@ -4,7 +4,8 @@ import Link from "next/link";
 import { CircleBadge, PageHero } from "@/components/layout/PageHero";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { Contact } from "@/components/sections/Contact";
-import { Portfolio } from "@/components/sections/Portfolio";
+// Hidden per client feedback; uncomment to bring the section back.
+// import { Portfolio } from "@/components/sections/Portfolio";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { PillLink } from "@/components/ui/PillLink";
 import { brands, categories } from "@/data/content";
@@ -13,16 +14,17 @@ import { brandDetails } from "@/data/pages";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Body & bath, hair care, men's grooming and skin care: everyday categories developed with fresh perspectives by Natural Wunderz.",
+    "Hair care, body care, skin care, men's care, pet care and baby care: everyday categories developed with fresh perspectives by Natural Wunderz.",
 };
 
 const productTypes: Record<string, string[]> = {
-  "body-bath": ["Body washes", "Exfoliating washes", "Body lotions", "Body oils"],
   "hair-care": ["Shampoos", "Conditioners", "Treatments", "Styling creams"],
-  "mens-grooming": ["Beard oils", "Hair & body washes", "Conditioners", "Grooming essentials"],
+  "body-care": ["Body washes", "Lotions & butters", "Body oils", "Fragrance mists"],
   "skin-care": ["Cleansers", "Moisturizers", "Serums", "Targeted treatments"],
-  "fragrance-mists": ["Body mists", "Hair mists", "Layering sets", "Travel sizes"],
-  "lotions-butters": ["Body lotions", "Body butters", "Hand creams", "Whipped creams"],
+  "mens-care": ["Beard oils", "Hair & body washes", "Conditioners", "Grooming essentials"],
+  // PLACEHOLDER: confirm product types with the client.
+  "pet-care": ["Shampoos", "Conditioners", "Coat sprays", "Paw care"],
+  "baby-care": ["Gentle washes", "Lotions", "Shampoos", "Diaper care"],
 };
 
 export default function ProductsPage() {
@@ -116,9 +118,11 @@ export default function ProductsPage() {
           </ul>
         </section>
 
+        {/* Hidden per client feedback; uncomment to bring the section back.
         <div className="pt-[clamp(72px,8vw,140px)]">
           <Portfolio />
         </div>
+        */}
         <Testimonials />
         <Contact
           title="Find the Right Products."

@@ -197,11 +197,11 @@ export function Brands() {
 
         <div className="mx-auto max-w-[1300px] pt-[clamp(48px,5vw,96px)] text-forest">
           <h2 ref={headingRef} className="font-valturin text-display uppercase">
-            Distinct Brands.
+            DISTINCTIVE BRANDS,
             <br />
-            One Thoughtful Approach.
+            THOUGHTFULLY MADE.
           </h2>
-          <p ref={descriptionRef} className="mt-6 ml-auto max-w-[500px] text-right text-body sm:mt-[28px]">
+          <p ref={descriptionRef} className="mt-6 ml-auto max-w-[680px] text-right text-lead sm:mt-[28px]">
             Explore our family of beauty and personal-care brands. Each has its own personality,
             ingredient story and product focus, creating distinct collections for different consumers
             and everyday routines.
