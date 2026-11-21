@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { PillLink } from "@/components/ui/PillLink";
+import Link from "next/link";
 import { brands, type Brand } from "@/data/content";
 import { img } from "@/lib/design";
 
@@ -41,7 +41,9 @@ function BrandTile({
   const href = `/brands/${brand.slug}`;
 
   return (
-    <article
+    <Link
+      href={href}
+      aria-label={`Explore ${brand.titleLines.join(" ")}`}
       data-brand-tile
       data-active={active}
       onClick={(e) => {
@@ -86,9 +88,9 @@ function BrandTile({
           ))}
         </h3>
         <p className="text-[clamp(14px,0.95vw,16px)] leading-[1.45]">{brand.description}</p>
-        <PillLink href={href}>Explore Now</PillLink>
+        <span className={`inline-flex items-center justify-center gap-[10px] rounded-[30px] border hover:border-forest px-[25px] py-[15px] text-[15px] leading-[1.21] whitespace-nowrap transition-[gap,background-color] duration-300 hover:bg-forest hover:text-white`}>Explore Now</span>
       </div>
-    </article>
+    </Link>
   );
 }
 

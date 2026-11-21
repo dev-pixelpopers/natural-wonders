@@ -14,7 +14,7 @@ import { img } from "@/lib/design";
 import { Faq } from "@/components/sections/Faq";
 
 export const metadata: Metadata = {
-  title: "Private Label",
+  title: "Contract Manufacturing",
   description:
     "Launch your own beauty and personal-care line with Natural Wunderz: formulation, packaging, manufacturing and fulfillment under one roof.",
 };
@@ -24,7 +24,7 @@ export default function PrivateLabelPage() {
     <>
       <main className="relative overflow-x-clip bg-forest">
         <PageHero
-          crumbs={[{ label: "Private Label" }]}
+          crumbs={[{ label: "Contract Manufacturing" }]}
           title={
             <>
               Your Brand.
@@ -66,7 +66,7 @@ export default function PrivateLabelPage() {
         </section>
 
         {/* Categories on the cream stadium */}
-        <section className="relative isolate mt-[clamp(96px,10vw,180px)] px-4 sm:px-[108px]">
+        {/* <section className="relative isolate mt-[clamp(96px,10vw,180px)] px-4 sm:px-[108px]">
           <div aria-hidden className="absolute inset-x-4 inset-y-0 -z-10 rounded-[clamp(60px,12vw,450px)] bg-cream sm:inset-x-[108px]" />
           <div className="mx-auto max-w-[1300px] px-2 py-[clamp(72px,8.96vw,172px)] sm:px-10">
             <SectionHeading
@@ -90,12 +90,12 @@ export default function PrivateLabelPage() {
               <PillLink href="/products">See All Categories</PillLink>
             </div>
           </div>
-        </section>
+        </section> */}
 
         <Capabilities />
 
         <section className="px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
-          <SectionHeading eyebrow="Good to Know" title="Private Label FAQs" />
+          <SectionHeading eyebrow="Good to Know" title="Manufacturing FAQ" />
           <div className="mx-auto mt-16 max-w-[1100px]">
             <Faq items={faqs.slice(1, 6)} />
           </div>

@@ -13,7 +13,7 @@ const CORNERS = [
   "-bottom-[3px] -right-[3px]",
 ];
 
-const AUTOPLAY_DELAY = 6000;
+const AUTOPLAY_DELAY = 3000;
 
 /** Text-only review card: the review itself is the focus, no product imagery. */
 function TestimonialCard({ t }: { t: Testimonial }) {
@@ -90,40 +90,68 @@ function TestimonialCard({ t }: { t: Testimonial }) {
   );
 }
 
+/** How many cards are visible at once at the widest breakpoint (clones needed for the loop). */
+const MAX_VISIBLE = 2;
+/** Slide duration (ms) for one card step. */
+const SLIDE_MS = 700;
+
 export function Testimonials() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const total = testimonials.length;
+  // Track = all reviews + the first few again, so the strip can run past the end and loop back.
+  const track = [...testimonials, ...testimonials.slice(0, MAX_VISIBLE)];
+
+  const [index, setIndex] = useState(0); // first visible card
+  const [animate, setAnimate] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
 
-  const pageSize = 2;
-  const totalPages = Math.ceil(testimonials.length / pageSize);
+  const next = () => {
+    setAnimate(true);
+    setIndex((i) => Math.min(i + 1, total));
+  };
 
-  const visibleTestimonials = testimonials.slice(
-    currentPage * pageSize,
-    currentPage * pageSize + pageSize,
-  );
+  const previous = () => {
+    if (index === 0) {
+      // Jump (without animating) to the matching clone at the end, then slide back one.
+      setAnimate(false);
+      setIndex(total);
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          setAnimate(true);
+          setIndex(total - 1);
+        }),
+      );
+      return;
+    }
+    setAnimate(true);
+    setIndex((i) => i - 1);
+  };
 
-  // Autoplay
+  const goTo = (i: number) => {
+    setAnimate(true);
+    setIndex(i);
+  };
+
+  // After sliding onto the clones, snap back to the matching real card invisibly once the
+  // slide has finished. Time-based rather than `transitionend`, which may not fire when the
+  // tab is in the background.
   useEffect(() => {
-    if (isPaused || totalPages <= 1) return;
+    if (index < total) return;
+    const id = setTimeout(() => {
+      setAnimate(false);
+      setIndex((i) => i - total);
+    }, SLIDE_MS);
+    return () => clearTimeout(id);
+  }, [index, total]);
 
-    const interval = setInterval(() => {
-      setCurrentPage((p) => (p < totalPages - 1 ? p + 1 : 0));
-    }, AUTOPLAY_DELAY);
+  // Autoplay: one card per tick
+  useEffect(() => {
+    if (isPaused || total <= 1) return;
+    const id = setInterval(next, AUTOPLAY_DELAY);
+    return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPaused, total, index]);
 
-    return () => clearInterval(interval);
-  }, [isPaused, totalPages, currentPage]);
-
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const previousPage = () => {
-    setCurrentPage((p) => (p > 0 ? p - 1 : totalPages - 1));
-  };
-
-  const nextPage = () => {
-    setCurrentPage((p) => (p < totalPages - 1 ? p + 1 : 0));
-  };
+  const active = index % total;
 
   return (
     <section
@@ -163,36 +191,51 @@ export function Testimonials() {
         What People Are Saying About Our Products
       </h2>
 
-      {/* Cards container */}
-      <div className="mt-[102px] flex flex-col items-center gap-16 transition-opacity duration-300 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[60px]">
-        {visibleTestimonials.map((t, i) => (
-          <TestimonialCard key={`${currentPage}-${i}`} t={t} />
-        ))}
+      {/* Slider viewport: 1 card visible on small screens, 2 from lg (--v). The padding
+          keeps the tilted cards' corners from being clipped. */}
+      <div className="mx-auto mt-[70px] max-w-[1400px] overflow-hidden py-8 [--v:1] lg:[--v:2]">
+        <ul
+          className="flex items-stretch motion-reduce:transition-none"
+          style={{
+            transform: `translateX(calc(${-index} * 100% / var(--v)))`,
+            transition: animate ? `transform ${SLIDE_MS}ms cubic-bezier(0.65, 0, 0.35, 1)` : "none",
+          }}
+        >
+          {track.map((t, i) => (
+            <li
+              key={i}
+              aria-hidden={i >= total || undefined}
+              className="flex shrink-0 grow-0 basis-[calc(100%/var(--v))] justify-center px-4 lg:px-[30px]"
+            >
+              <TestimonialCard t={t} />
+            </li>
+          ))}
+        </ul>
       </div>
 
       {/* Interactive Carousel Controls */}
-      <div className="mx-auto mt-[72px] flex items-center justify-center gap-5">
+      <div className="mx-auto mt-[40px] flex items-center justify-center gap-5">
         <button
           type="button"
-          onClick={previousPage}
+          onClick={previous}
           className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/25 text-white/80 transition-all hover:border-white/60 hover:text-white"
-          aria-label="Previous testimonials"
+          aria-label="Previous review"
         >
           <span className="inline-block rotate-180 font-mono text-sm leading-none">
             →
           </span>
         </button>
 
-        <div className="flex items-center gap-2.5">
-          {Array.from({ length: totalPages }).map((_, i) => (
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {testimonials.map((_, i) => (
             <button
               key={i}
               type="button"
-              onClick={() => goToPage(i)}
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={currentPage === i ? "true" : undefined}
+              onClick={() => goTo(i)}
+              aria-label={`Go to review ${i + 1}`}
+              aria-current={active === i ? "true" : undefined}
               className={`cursor-pointer rounded-full transition-all duration-300 ${
-                currentPage === i
+                active === i
                   ? "h-2.5 w-7 bg-mint shadow-[0_0_8px_rgba(194,255,214,0.6)]"
                   : "h-2.5 w-2.5 bg-[#C2FFD6]/40 hover:bg-[#C2FFD6]/70"
               }`}
@@ -202,9 +245,9 @@ export function Testimonials() {
 
         <button
           type="button"
-          onClick={nextPage}
+          onClick={next}
           className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-white/25 text-white/80 transition-all hover:border-white/60 hover:text-white"
-          aria-label="Next testimonials"
+          aria-label="Next review"
         >
           <span className="inline-block font-mono text-sm leading-none">
             →

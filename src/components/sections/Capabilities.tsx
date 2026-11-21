@@ -16,6 +16,7 @@ const photos = [
   "brand-gentlemen-supply.jpg",
 ];
 
+
 export function Capabilities() {
   const totalSlides = capabilityDetails.length;
 
@@ -25,7 +26,6 @@ export function Capabilities() {
   const [animating, setAnimating] = useState(false);
 
   const activeIndex = virtualIndex % totalSlides;
-  const current = capabilityDetails[activeIndex] || capabilityDetails[0];
 
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -180,17 +180,22 @@ export function Capabilities() {
 
   return (
     <section className="relative overflow-x-clip pt-[163px]">
-      <h2 className="mx-auto max-w-[1651px] px-4 text-center font-valturin text-display leading-[0.98] text-white uppercase">
+      <h2 id="capabilities-heading" className="mx-auto max-w-[1651px] px-4 text-center font-valturin text-display leading-[0.98] text-white uppercase">
         Capabilities Behind the Brands.
       </h2>
 
-      <div
+      {/* <div
         className="mx-auto mt-[77px] grid max-w-[1920px] grid-cols-1 gap-y-16 px-4 lg:grid-cols-[minmax(0,773px)_minmax(0,1fr)] lg:gap-x-[93px] lg:pr-[149px] lg:pl-[185px]"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      > */}
+       <div
+        className="mx-auto mt-[77px] grid max-w-[1920px] grid-cols-1 gap-y-16 px-4 lg:grid-cols-[minmax(0,650px)_minmax(0,1fr)] lg:gap-x-[93px] lg:pr-[149px] lg:pl-[185px]"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
         {/* Image */}
-        <div className="relative">
+        <div className="relative flex">
           <div
             className="relative aspect-[773/736] overflow-hidden"
             style={{
@@ -221,39 +226,52 @@ export function Capabilities() {
             aria-hidden
             width={500}
             height={259}
-            className="pointer-events-none absolute top-[88.86%] left-[88.75%] z-10 h-auto w-[64.7%] max-w-none -translate-1/2 rotate-[-11.57deg]"
+            className="pointer-events-none absolute top-[90%] left-[88.75%] z-10 h-auto w-[64.7%] max-w-none -translate-1/2 rotate-[-11.57deg]"
           />
         </div>
 
         {/* Right Content */}
-        <div className="w-full max-w-[720px] lg:pt-[55px]">
-          <div
-            className={`transition-all duration-300 ease-out ${
-              animating
-                ? "translate-y-1 opacity-0"
-                : "translate-y-0 opacity-100"
-            }`}
-          >
-            <h3 className="max-w-[409px] font-valturin text-title text-white capitalize lg:ml-[70px]">
-              {current.title}
-            </h3>
+        <div className="w-full max-w-[720px]">
+          {/* Every capability's text sits in the same grid cell, so this block always takes
+              the height of the longest one and the section never grows or shrinks between slides. */}
+          <div className="grid">
+            {capabilityDetails.map((item, i) => {
+              const isActive = i === activeIndex;
+              return (
+                <div
+                  key={item.title}
+                  aria-hidden={!isActive}
+                  className={`transition-all duration-300 ease-out [grid-area:1/1] ${
+                    !isActive
+                      ? "invisible opacity-0"
+                      : animating
+                        ? "translate-y-1 opacity-0"
+                        : "translate-y-0 opacity-100"
+                  }`}
+                >
+                  <h3 className="max-w-[409px] font-valturin text-title text-white capitalize lg:ml-[70px]">
+                    {item.title}
+                  </h3>
 
-            <div className="relative mt-[60px]">
-              <div
-                aria-hidden
-                className="absolute top-[18px] left-0 hidden h-[2px] w-[31%] bg-linear-to-r from-forest to-white lg:block"
-              />
+                  <div className="relative mt-[60px]">
+                    <div
+                      aria-hidden
+                      className="absolute top-[18px] left-0 hidden h-[2px] w-[31%] bg-linear-to-r from-forest to-white lg:block"
+                    />
 
-              <p className="ml-auto max-w-[70%] text-right text-body-lg text-white capitalize">
-                {current.body}
-              </p>
-            </div>
+                    <p className="ml-auto max-w-[70%] text-right text-body-lg text-white capitalize">
+                      {item.body}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Infinite Capability Tabs */}
           <div
             ref={containerRef}
-            className="mt-16 overflow-x-auto py-2 font-gotham text-[28px] leading-[0.98] tracking-[-0.02em] text-stone capitalize no-scrollbar scroll-smooth lg:mt-[123px] lg:-ml-[128px]"
+            className="mt-10 overflow-x-auto py-2 font-gotham text-[28px] leading-[0.98] tracking-[-0.02em] text-stone capitalize no-scrollbar scroll-smooth mb-0 lg:mb-[50px] lg:mt-[50px] lg:-ml-[128px]"
           >
             <div className="inline-flex w-max items-center">
               {Array.from({ length: totalSlides * 3 }, (_, index) => {

@@ -13,7 +13,7 @@ type ContactProps = {
 
 export function Contact({
   title = "Let’s Talk About What’s Next.",
-  intro = "Interested in carrying our brands, learning more about our products or exploring private label? Share a brief description of what you have in mind, and our team will get back to you.",
+  intro = "Interested in carrying our brands, learning more about our products or exploring Contract Manufacturing? Share a brief description of what you have in mind, and our team will get back to you.",
   defaultInterest,
 }: ContactProps) {
   return (
@@ -31,7 +31,7 @@ export function Contact({
           </p>
 
           <div className="mt-[85px] flex max-w-[535px] flex-wrap items-center justify-between gap-6 text-white capitalize">
-            <a href={`tel:${contact.phone}`} className="flex items-center gap-[29px]">
+            {/* <a href={`tel:${contact.phone}`} className="flex items-center gap-[29px]">
               <span className="relative size-[49px] shrink-0">
                 <Image src={img("phone-circle.svg")} alt="" width={49} height={49} className="size-[49px]" />
                 <Image
@@ -46,7 +46,7 @@ export function Contact({
                 <span className="text-[18px] leading-[24px] tracking-[-0.03em]">Call us</span>
                 <span className="text-[26px] leading-[30px] tracking-[-0.03em]">{contact.phone}</span>
               </span>
-            </a>
+            </a> */}
             <Link href="/contact" className="flex items-center gap-[2px] text-[20px] leading-[36px] tracking-[-0.03em] transition-opacity hover:opacity-70">
               Inquire Now
               <Image src={img("arrow-inquire.svg")} alt="" width={13} height={11} className="h-[11px] w-[12.75px]" />

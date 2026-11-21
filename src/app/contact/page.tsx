@@ -10,7 +10,7 @@ import { img } from "@/lib/design";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with Natural Wunderz about carrying our brands, our products or private label.",
+  description: "Get in touch with Natural Wunderz about carrying our brands, our products or Contract Manufacturing.",
 };
 
 const isInterest = (v: unknown): v is Interest => interestOptions.some((o) => o.value === v);
@@ -56,7 +56,7 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
               What’s Next.
             </>
           }
-          intro="Interested in carrying our brands, learning more about our products or exploring private label? We’d love to hear from you."
+          intro="Interested in carrying our brands, learning more about our products or exploring Contract Manufacturing? We’d love to hear from you."
         />
 
         <section className="px-4 sm:px-[94px]">

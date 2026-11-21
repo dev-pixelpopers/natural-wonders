@@ -29,7 +29,7 @@ export default function AboutPage() {
             </>
           }
           intro="We are a beauty and personal-care manufacturer and brand builder. For three decades we’ve combined thoughtful formulas, carefully chosen ingredients and distinctive packaging to bring products from concept to shelf."
-          aside={<CircleBadge href="#story" label="Read Our Story" />}
+          // aside={<CircleBadge href="#story" label="Read Our Story" />}
         />
 
         {/* Story: masked photo with copy, mirroring the homepage Capabilities layout */}
@@ -45,7 +45,7 @@ export default function AboutPage() {
                 }}
               >
                 <Image
-                  src={img("category-body-bath.jpg")}
+                  src={img("portfolio-papaya-lotion.jpg")}
                   alt="Natural Wunderz body care products"
                   fill
                   sizes="(min-width: 1024px) 800px, 100vw"
@@ -65,7 +65,7 @@ export default function AboutPage() {
             <div>
               <SectionHeading layout="left" eyebrow="Our Story" title="From Formula to Shelf, Under One Roof." />
               <div className="relative mt-[50px]">
-                <div aria-hidden className="absolute top-[18px] left-0 hidden h-[2px] w-[200px] bg-linear-to-r from-forest to-white lg:block" />
+                <div aria-hidden className="absolute -top-[25px] left-0 hidden h-[2px] w-[200px] bg-linear-to-r from-forest to-white lg:block" />
                 <div className="ml-auto flex max-w-[565px] flex-col gap-6 text-body text-white lg:text-right">
                   <p>
                     Natural Wunderz began on the manufacturing floor. Long before we launched our own
@@ -88,7 +88,7 @@ export default function AboutPage() {
           <ul className="mx-auto grid max-w-[1650px] grid-cols-2 gap-y-14 border-y border-white/15 py-14 lg:grid-cols-4 lg:py-20">
             {stats.map((s, i) => (
               <li key={s.label} className={`flex flex-col items-center px-4 text-center ${i > 0 ? "lg:border-l lg:border-white/15" : ""}`}>
-                <p className="font-valturin text-[clamp(4rem,8vw,9.5rem)] leading-[0.9] tracking-[-0.02em] text-cream">
+                <p className="font-valturin text-[clamp(4rem,6vw,7.5rem)] leading-[0.9] tracking-[-0.02em] text-cream">
                   {s.value}
                   <span className="ml-1 align-top text-[0.32em] text-mint">{s.suffix}</span>
                 </p>
@@ -145,7 +145,7 @@ export default function AboutPage() {
           <ol className="relative grid gap-12 md:grid-cols-4 md:gap-8">
             {milestones.map((m) => (
               <li key={m.year} className="relative flex flex-col items-center text-center">
-                <span className="relative flex size-[112px] items-center justify-center font-valturin text-[24px] text-cream">
+                <span className="relative flex size-[112px] items-center justify-center font-valturin text-[24px] text-cream bg-forest">
                   <Image src={img("circle-dashed-sm.png")} alt="" fill sizes="112px" />
                   <span className="relative">{m.year}</span>
                 </span>

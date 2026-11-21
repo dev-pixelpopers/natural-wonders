@@ -123,7 +123,7 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
         </section>
 
         {/* Gallery */}
-        <section className="relative isolate px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
+        {/* <section className="relative isolate px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
           <Image
             src={img("portfolio-leaves.svg")}
             alt=""
@@ -133,7 +133,7 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
             className="pointer-events-none absolute top-[60px] right-[-120px] -z-10 h-auto w-[min(793px,60vw)] max-w-none rotate-[7.64deg] opacity-80"
           />
           <SectionHeading layout="split" title="The Collection" body={`Browse the ${brand.name} range by category.`} className="mx-auto max-w-[1650px]" />
-          <BrandCollection brandName={brand.name} products={brandProducts} />
+          <BrandCollection brandName={brand.name} products={brandProducts} /> */}
 
           {/* Previous image-only gallery (brandDetails.gallery), kept for reference.
           <ul className="mx-auto mt-16 grid max-w-[1650px] auto-rows-[260px] grid-cols-2 gap-4 md:auto-rows-[340px] md:grid-cols-4 md:gap-6">
@@ -156,10 +156,10 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
             ))}
           </ul>
           */}
-        </section>
+        {/* </section> */}
 
         {/* Categories this brand covers */}
-        {brandCategories.length > 0 && (
+        {/* {brandCategories.length > 0 && (
           <section className="px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
             <SectionHeading eyebrow="Shop by Category" title="Where You’ll Find It." />
             <ul className="mx-auto mt-16 grid max-w-[1400px] gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -182,18 +182,18 @@ export default async function BrandPage({ params }: PageProps<"/brands/[slug]">)
               ))}
             </ul>
           </section>
-        )}
+        )} */}
 
         {/* Other brands */}
         <section className="px-4 pt-[clamp(96px,10vw,180px)] sm:px-[94px]">
           <SectionHeading eyebrow="Keep Exploring" title="More From Our Family." />
-          <ul className="mx-auto mt-16 grid max-w-[1400px] gap-12 md:grid-cols-2">
+          <ul className="mx-auto mt-16 grid max-w-[1400px] gap-12 md:grid-cols-3">
             {others.map((b) => (
               <li key={b.slug} className="flex flex-col items-center gap-8 text-center">
                 <Link href={`/brands/${b.slug}`} className="relative block aspect-[16/9] w-full overflow-hidden rounded-[20px] border border-white">
                   <Image src={brandDetails[b.slug].hero} alt={`${b.name} products`} fill sizes="(min-width: 768px) 700px, 100vw" className="object-cover transition-transform duration-700 hover:scale-105" />
                 </Link>
-                <h3 className="font-valturin text-title text-white uppercase">{b.name}</h3>
+                <h3 className="font-valturin text-[36px] leading-[0.9] tracking-[-0.02em] uppercase">{b.name}</h3>
                 <PillLink href={`/brands/${b.slug}`} tone="light">
                   Explore Now
                 </PillLink>

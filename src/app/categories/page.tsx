@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CircleBadge, PageHero } from "@/components/layout/PageHero";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { CategoriesCatalog } from "@/components/sections/CategoriesCatalog";
+// Hidden on this page; uncomment (with its usage below) to bring the catalog back.
+// import { CategoriesCatalog } from "@/components/sections/CategoriesCatalog";
 import { Contact } from "@/components/sections/Contact";
+import { ExploreByCategory } from "@/components/sections/ExploreByCategory";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { categories } from "@/data/content";
 
@@ -12,6 +14,7 @@ export const metadata: Metadata = {
   description:
     "Hair care, body care, skin care, men's care, pet care and baby care: everyday personal care categories developed with fresh perspectives by Natural Wunderz.",
 };
+
 
 export default function CategoriesPage() {
   return (
@@ -28,9 +31,9 @@ export default function CategoriesPage() {
             </>
           }
           intro="We develop across core beauty and personal-care categories, creating everyday essentials with standout formulas, distinctive fragrances, and accessible price points."
-          aside={<CircleBadge href="#categories-catalog" label="Browse Catalog" />}
+          // aside={<CircleBadge href="#categories-catalog" label="Browse Catalog" />}
         >
-          <nav aria-label="Categories" className="mt-14">
+          {/* <nav aria-label="Categories" className="mt-14">
             <ul className="flex flex-wrap justify-center gap-[14px]">
               {categories.map((c) => (
                 <li key={c.slug}>
@@ -43,13 +46,17 @@ export default function CategoriesPage() {
                 </li>
               ))}
             </ul>
-          </nav>
+          </nav> */}
         </PageHero>
 
-        {/* Categories Catalog with interactive filters, spotlight and products grid */}
+        {/* Categories Catalog with filters and products grid: hidden on this page for now.
         <div className="pt-10">
           <CategoriesCatalog />
         </div>
+        */}
+
+        {/* Explore By Category (moved out of CategoriesCatalog): the main content of this page */}
+        <ExploreByCategory />
 
         {/* Real Customer Testimonials */}
         <Testimonials />
@@ -57,7 +64,7 @@ export default function CategoriesPage() {
         {/* Contact Section */}
         <Contact
           title="Develop With Us Across Categories."
-          intro="Looking for specific formulas, custom pack sizes, or private label options in these categories? Tell us what you have in mind and our team will put together options."
+          intro="Looking for specific formulas, custom pack sizes, or Contract Manufacturing options in these categories? Tell us what you have in mind and our team will put together options."
           defaultInterest="products"
         />
       </main>

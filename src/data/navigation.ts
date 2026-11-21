@@ -8,7 +8,8 @@ export const mainNav: NavLink[] = [
   { label: "Categories", href: "/categories" },
   { label: "Products", href: "/products" },
   { label: "Capabilities", href: "/capabilities" },
-  { label: "Private Label", href: "/private-label" },
+  // { label: "Contract Manufacturing", href: "/Contract Manufacturing" },
+  { label: "Contract Manufacturing", href: "/contract-manufacturing" },
   { label: "Resources", href: "/resources" },
   { label: "Contact", href: "/contact" },
 ];
@@ -23,7 +24,8 @@ export const footerNav: NavLink[][] = [
     { label: "Capabilities", href: "/capabilities" },
   ],
   [
-    { label: "Private Label", href: "/private-label" },
+    // { label: "Contract Manufacturing", href: "/Contract Manufacturing" },
+    { label: "Contract Manufacturing", href: "/contract-manufacturing" },
     { label: "Resources", href: "/resources" },
     { label: "Contact", href: "/contact" },
   ],

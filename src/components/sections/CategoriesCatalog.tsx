@@ -340,7 +340,14 @@ export function CategoriesCatalog() {
           </div>
         )}
 
-        {/* Category Editorial Cards Section (when in All Categories view) */}
+        {/* Explore By Category now lives in its own component (ExploreByCategory.tsx) and is shown
+            on the categories page. To show it inside the catalog again, import it and use:
+            {activeCategory === "all" && !searchQuery && activeBrand === "all" && (
+              <ExploreByCategory contained={false} className="mt-24 border-t border-white/10 pt-20" />
+            )}
+        */}
+        {/* Original markup, kept for reference.
+        {/ * Category Editorial Cards Section (when in All Categories view) * /}
         {activeCategory === "all" && !searchQuery && activeBrand === "all" && (
           <div className="mt-24 border-t border-white/10 pt-20">
             <div className="text-center">
@@ -397,6 +404,7 @@ export function CategoriesCatalog() {
             </div>
           </div>
         )}
+        */}
       </div>
     </section>
   );

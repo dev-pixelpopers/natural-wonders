@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
       { source: "/categories/lotions-butters", destination: "/categories/body-care", permanent: true },
       { source: "/categories/fragrance-mists", destination: "/categories/body-care", permanent: true },
       { source: "/categories/mens-grooming", destination: "/categories/mens-care", permanent: true },
+      // Private Label page was renamed to Contract Manufacturing.
+      { source: "/private-label", destination: "/contract-manufacturing", permanent: true },
     ];
   },
   turbopack: {

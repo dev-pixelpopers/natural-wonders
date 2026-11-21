@@ -45,27 +45,18 @@ export function BrandCard({ brand, className = "", style }: BrandCardProps) {
       style={{ boxShadow: brand.shadow, ...style }}
     >
       {brand.layers.map((layer, i) => (
-        <PhotoLayer key={i} layer={layer} sizes="(min-width: 1100px) 1170px, 110vw" />
+        <PhotoLayer key={i} layer={layer} sizes="(min-width: 1100px) 1170px, 110vw"  />
       ))}
 
       <div
-        className="relative flex flex-1 flex-col items-start text-forest"
+        className="relative flex flex-1 flex-col items-start justify-start text-forest"
         style={{
           paddingLeft: `max(20px, ${u(53)})`,
           paddingTop: `max(20px, ${u(45)})`,
           paddingBottom: `max(20px, ${u(104.5)})`,
         }}
       >
-        <h3
-          className="font-valturin leading-[0.84] tracking-[-0.02em] uppercase"
-          style={{ fontSize: `max(30px, ${u(71)})`, width: `max(${u(441)}, min(70%, 220px))` }}
-        >
-          {brand.titleLines.map((line) => (
-            <span key={line} className="block">
-              {line}
-            </span>
-          ))}
-        </h3>
+  
         <p
           className="leading-[1.35]"
           style={{
@@ -76,17 +67,6 @@ export function BrandCard({ brand, className = "", style }: BrandCardProps) {
         >
           {brand.description}
         </p>
-        <PillLink
-          href={`/brands/${brand.slug}`}
-          className="mt-auto"
-          style={{
-            fontSize: `max(13px, ${u(15)})`,
-            paddingInline: `max(18px, ${u(25)})`,
-            paddingBlock: `max(10px, ${u(15)})`,
-          }}
-        >
-          Explore Now
-        </PillLink>
       </div>
     </article>
   );

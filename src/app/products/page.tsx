@@ -70,7 +70,9 @@ export default function ProductsPage() {
                   <article className={`relative flex flex-col lg:flex-row lg:items-center ${flip ? "lg:flex-row-reverse" : ""}`}>
                     <div className="relative z-10 mx-auto aspect-[377/586] w-[min(100%,420px)] shrink-0 overflow-hidden rounded-[49px] border-[15px] border-forest lg:mx-0 lg:w-[34%]">
                       <div className="absolute inset-0 overflow-hidden rounded-[34px]">
-                        <Image src={c.image} alt="" width={2752} height={1536} sizes="1050px" className="absolute max-w-none" style={c.crop} />
+                        {/* <Image src={c.image} alt="" width={2752} height={1536} sizes="1050px" className="absolute max-w-none" style={c.crop} /> */}
+                        {/* New category photos aren't cropped, so cover the frame instead of stretching to it. */}
+                        <Image src={c.image} alt="" width={2752} height={1536} sizes="1050px" className="absolute max-w-none object-cover" style={c.crop} />
                       </div>
                     </div>
 

@@ -30,7 +30,7 @@ export default function CapabilitiesPage() {
             </>
           }
           intro="From the first formula to the final shipment, every step happens with us. Integrated development, branding, sourcing, manufacturing and fulfillment let us launch quickly with quality, value and shelf appeal."
-          aside={<CircleBadge href="#explore" label="Explore What We Do" />}
+          // aside={<CircleBadge href="#explore" label="Explore What We Do" />}
         />
 
         <section id="explore" className="relative scroll-mt-10">
@@ -76,7 +76,17 @@ export default function CapabilitiesPage() {
               {pillars.map((p) => (
                 <li key={p.label} className="flex flex-col items-center gap-5 text-center">
                   <span className="flex size-[110px] items-center justify-center rounded-full bg-sage">
-                    <Image src={p.icon} alt="" width={113} height={110} className="h-[70px] w-auto" />
+                    <Image
+                      src={p.icon}
+                      alt=""
+                      // width={70}
+                      // height={70}
+                      // className="size-[70px] object-contain"
+                      // Icon files are squashed (1024×572); fill a 113:110 box like the home page so they look right.
+                      width={113}
+                      height={110}
+                      className="h-[68px] w-[70px] object-fill"
+                    />
                   </span>
                   <p className="max-w-[220px] font-valturin text-[24px] leading-[0.95] uppercase">{p.label}</p>
                 </li>

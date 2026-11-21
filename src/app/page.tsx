@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 // import { Brands } from "@/components/sections/brands/Brands";
 import { BrandsNew } from "@/components/sections/brands/BrandsNew";
 import { Capabilities } from "@/components/sections/Capabilities";
-import { Categories } from "@/components/sections/Categories";
+import { Categories } from "@/components/sections/Categories-New";
 import { Contact } from "@/components/sections/Contact";
 import Hero from "@/components/sections/Hero";
 // Hidden per client feedback; uncomment to bring the section back.

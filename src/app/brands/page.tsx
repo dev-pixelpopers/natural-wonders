@@ -33,7 +33,7 @@ export default function BrandsPage() {
             </>
           }
           intro="Explore our family of beauty and personal-care brands. Each has its own personality, ingredient story and product focus, creating distinct collections for different consumers and everyday routines."
-          aside={<CircleBadge href="#brand-list" label="Meet the Brands" />}
+          // aside={<CircleBadge href="#brand-list" label="Meet the Brands" />}
         />
 
         <section id="brand-list" className="relative scroll-mt-10 px-4 sm:px-[94px]">
@@ -85,7 +85,7 @@ export default function BrandsPage() {
           <SectionHeading
             eyebrow="For Retailers"
             title="Bring Our Brands to Your Shelves."
-            body="Our brands are carried by leading off-price and online retailers across more than 16,000 US stores. Ask for line sheets, pricing and availability."
+            body="Our brands are carried by leading online retailers across more than 16,000 US stores. Ask for line sheets, pricing and availability."
           />
         </section>
 

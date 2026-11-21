@@ -83,19 +83,20 @@ export const brands: Brand[] = [
       "An upbeat take on body care for people drawn to freshness, fun and a little everyday escapism. Juice Day channels a fruit-inspired personality that makes caring for yourself feel lighthearted and full of possibility.",
     descriptionWidth: 334,
     layers: [
+      // Mirrored copy hidden: it sat exactly under the main photo and showed through its transparent areas.
+      // {
+        // src: img("brand-juice-day.png"),
+        // left: 0,
+        // top: 0,
+        // width: 1027,
+        // height: 558,
+        // flipX: true,
+      // },
       {
         src: img("brand-juice-day.png"),
-        left: -963,
+        left: 0,
         top: 0,
-        width: 1023,
-        height: 558,
-        flipX: true,
-      },
-      {
-        src: img("brand-juice-day.png"),
-        left: 60,
-        top: 0,
-        width: 1023,
+        width: 1027,
         height: 558,
       },
     ],
@@ -143,8 +144,8 @@ export const categories: Category[] = [
     description:
       "Shampoos, conditioners and treatments that bring a clear point of view to everyday hair-care routines.",
     descriptionWidth: 266,
-    image: img("category-hair-care.jpg"),
-    crop: { left: "-117.4%", top: "-2.73%", width: "218.24%", height: "105.45%" },
+    image: img("hair-care.jpeg"),
+    crop: { left: "0", top: "0", width: "100%", height: "100%" },
   },
   {
     title: "Body Care",
@@ -152,8 +153,8 @@ export const categories: Category[] = [
     description:
       "Body washes, lotions, butters, oils and fragrance mists designed to make daily body care feel more personal.",
     descriptionWidth: 271,
-    image: img("category-body-bath.jpg"),
-    crop: { left: "-145.42%", top: "-0.03%", width: "278.59%", height: "100.06%" },
+    image: img("body-care.jpg"),
+    crop: { left: "0%", top: "0%", width: "100%", height: "100%" },
   },
   {
     title: "Skin Care",
@@ -161,8 +162,8 @@ export const categories: Category[] = [
     description:
       "Focused skin-care products built around thoughtful ingredients and easy-to-understand routines.",
     descriptionWidth: 261,
-    image: img("category-skin-care.jpg"),
-    crop: { left: "-130.32%", top: "0%", width: "284.17%", height: "100.01%" },
+    image: img("skin-care.jpg"),
+    crop: { left: "0%", top: "0%", width: "100%", height: "100%" },
   },
   {
     title: "Men's Care",
@@ -171,8 +172,8 @@ export const categories: Category[] = [
       "Hair and body essentials presented through brands created specifically for men’s everyday needs.",
     descriptionWidth: 261,
     // category-mens-grooming.jpg actually shows Juice Day mists, so use the Gentleman Supply shot.
-    image: img("brand-gentlemen-supply.jpg"),
-    crop: { left: "-77%", top: "0%", width: "244%", height: "100%" },
+    image: img("men-care.jpg"),
+    crop: { left: "0%", top: "0%", width: "100%", height: "100%" },
   },
   {
     // PLACEHOLDER: copy and image to be replaced with client-supplied content.
@@ -181,8 +182,8 @@ export const categories: Category[] = [
     description:
       "Gentle, thoughtfully formulated care for the four-legged members of the family, coming soon.",
     descriptionWidth: 266,
-    image: img("category-pet-care-placeholder.svg"),
-    crop: PLACEHOLDER_CROP,
+    image: img("pet-care.jpg"),
+    crop: { left: "0%", top: "0%", width: "100%", height: "100%" },
   },
   {
     // PLACEHOLDER: copy and image to be replaced with client-supplied content.
@@ -191,8 +192,8 @@ export const categories: Category[] = [
     description:
       "Mild, caring essentials made with familiar ingredients for little ones' everyday routines, coming soon.",
     descriptionWidth: 266,
-    image: img("category-baby-care-placeholder.svg"),
-    crop: PLACEHOLDER_CROP,
+    image: img("baby-care.jpg"),
+    crop: { left: "0%", top: "0%", width: "100%", height: "100%" },
   },
   // Hidden per client feedback; their products now live under Body Care.
   // {
@@ -725,7 +726,7 @@ export const contact = {
 export const interestOptions = [
   { value: "brands", label: "Carrying our brands" },
   { value: "products", label: "Our products" },
-  { value: "private-label", label: "Private label" },
+  { value: "private-label", label: "Contract Manufacturing" },
   { value: "other", label: "Something else" },
 ] as const;
 

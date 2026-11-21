@@ -69,7 +69,7 @@ export default async function SingleCategoryPage({ params }: PageProps) {
         {/* Contact Section */}
         <Contact
           title={`Develop ${category.title} Products With Us.`}
-          intro={`Looking for custom formulations, pack sizes, or private label solutions in ${category.title.toLowerCase()}? Tell us what you have in mind.`}
+          intro={`Looking for custom formulations, pack sizes, or Contract Manufacturing solutions in ${category.title.toLowerCase()}? Tell us what you have in mind.`}
           defaultInterest="products"
         />
       </main>

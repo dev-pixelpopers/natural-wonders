@@ -170,7 +170,7 @@ export const milestones = [
   { year: "1990s", text: "Our founders begin manufacturing personal-care products in Southern California." },
   { year: "2000s", text: "In-house formulation and fragrance development expand the product range." },
   { year: "2010s", text: "Natural Wunderz launches, followed by a growing family of distinct brands." },
-  { year: "Today", text: "Our products reach more than 16,000 US stores through leading off-price and online retailers." },
+  { year: "Today", text: "Our products reach more than 16,000 US stores through leading online retailers." },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -216,7 +216,7 @@ export const capabilityDetails = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Private label                                                       */
+/* Contract Manufacturing                                                       */
 /* ------------------------------------------------------------------ */
 
 export const privateLabelSteps = [
@@ -244,8 +244,9 @@ export const resources = [
     title: "Planning a private-label launch",
     body: "What to prepare before your first conversation: target customer, price point, volumes and timing.",
     image: img("capabilities-formulation.jpg"),
-    href: "/private-label",
-    cta: "Explore Private Label",
+    // href: "/private-label",
+    href: "/contract-manufacturing",
+    cta: "Explore Contract Manufacturing",
   },
   {
     kind: "Category insight",
@@ -268,10 +269,10 @@ export const resources = [
 export const faqs = [
   {
     q: "Do you work with retailers who want to carry your brands?",
-    a: "Yes. Our brands are carried by leading off-price and online retailers across the US. Get in touch and our team will share line sheets, pricing and availability.",
+    a: "Yes. Our brands are carried by leading online retailers across the US. Get in touch and our team will share line sheets, pricing and availability.",
   },
   {
-    q: "What are your minimum order quantities for private label?",
+    q: "What are your minimum order quantities for Contract Manufacturing?",
     a: "Minimums depend on the product, packaging and whether we use an existing or custom formula. We will recommend options that fit your launch plans during discovery.",
   },
   {
